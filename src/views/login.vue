@@ -44,7 +44,7 @@
 <script>
 import { encrypt } from '@/utils/rsaEncrypt'
 import Config from '@/settings'
-import Logo from '@/assets/images/logo1.png'
+import Logo from '@/assets/images/logo.png'
 import { getCodeImg } from '@/api/login'
 import Cookies from 'js-cookie'
 export default {
@@ -129,7 +129,7 @@ export default {
           }
           this.$store.dispatch('Login', user).then(() => {
             this.loading = false
-            
+
             this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
             this.loading = false

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Logo from '@/assets/images/logo1.png'
+import Logo from '@/assets/images/logo.png'
 import Config from '@/settings'
 export default {
   name: 'SidebarLogo',
