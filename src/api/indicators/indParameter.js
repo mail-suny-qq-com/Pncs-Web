@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const url = '/v1/indicators/indParameters'
+const url = 'v1/indicators/indParameters'
 
 export function add(data) {
   return request({

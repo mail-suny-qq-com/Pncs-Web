@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" :style="{backgroundImage: 'url('+getBackground+')'}">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" label-position="left" label-width="0px" class="login-form">
       <h3 class="title">
         <img v-if="logo" :src="logo" class="sidebar-logo">{{title}}
@@ -84,6 +84,9 @@ export default {
     this.getCookie()
   },
   methods: {
+    getBackground() {
+      return '../assets/images/login_bg_2.jpg'
+    },
     getCode() {
       getCodeImg().then(res => {
         this.codeUrl = res.img
@@ -158,7 +161,7 @@ export default {
     align-items: center;
     height: 100%;
     // background-image:url(https://api.isoyu.com/bing_images.php);
-    background-image:url('../assets/images/10.jpg');
+    background-image:url('../assets/images/login_bg_5.jpg');
     background-size: cover;
   }
   .title {
