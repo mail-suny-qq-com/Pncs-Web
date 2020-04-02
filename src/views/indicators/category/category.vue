@@ -89,7 +89,7 @@
       parentId: { type: String, default: '0' }
     },
     mounted() {
-      console.log('=====category---mounted....')
+      //console.log('=====category---mounted....')
       this.init()
     }
     ,

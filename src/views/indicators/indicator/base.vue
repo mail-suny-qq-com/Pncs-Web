@@ -254,7 +254,7 @@ const defaultForm = {
   ieName: null,
   categoryId: null,
   ieProp: null,
-  ieType: null,
+  ieType: '1',
   ieDesc: null,
   ieRule: null,
   ieDefaultValue: null,
