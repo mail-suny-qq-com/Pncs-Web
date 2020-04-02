@@ -161,9 +161,11 @@ export default {
     align-items: center;
     height: 100%;
     // background-image:url(https://api.isoyu.com/bing_images.php);
-    background-image:url('../assets/images/login_bg_5.jpg');
+    background-image:url('../assets/images/login_bg_1.jpg');
+    background-color: rgba(0,0,0,0.8);
     background-size: cover;
   }
+
   .title {
     margin: 0 auto 30px auto;
     text-align: center;
