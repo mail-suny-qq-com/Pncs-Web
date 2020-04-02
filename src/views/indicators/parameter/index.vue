@@ -2,14 +2,20 @@
   <div class="app-container">
     <!--工具栏-->
     <div class="head-container">
+      <div v-if="crud.props.searchToggle">
+        <!-- 搜索 -->
+        <el-input v-model="query.parmCode" clearable size="small" placeholder="参数编号" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.parmName" clearable size="small" placeholder="参数名称" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-select v-model="query.status" clearable size="small" placeholder="状态" class="filter-item" style="width: 90px" @change="crud.toQuery">
+          <el-option v-for="item in dict.STATUS" :key="item.id" :label="item.label" :value="item.value" />
+        </el-select>
+        <rrOperation :crud="crud" />
+      </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="参数ID" prop="id">
-            <el-input v-model="form.id" style="width: 370px;" />
-          </el-form-item>
           <el-form-item label="参数类型">
             <el-input v-model="form.categoryId" style="width: 370px;" />
           </el-form-item>
@@ -20,7 +26,13 @@
             <el-input v-model="form.parmName" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="参数值类型">
-            <el-input v-model="form.parmType" style="width: 370px;" />
+            <el-select v-model="form.parmType" filterable placeholder="请选择">
+              <el-option
+                v-for="item in dict.PARM_TYPE"
+                :key="item.id"
+                :label="item.label"
+                :value="item.value" />
+            </el-select>
           </el-form-item>
           <el-form-item label="参数值">
             <el-input v-model="form.parmValue" style="width: 370px;" />
@@ -29,9 +41,15 @@
             <el-input v-model="form.parmDesc" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="状态(1-启用，0-停用)">
-            <el-input v-model="form.status" style="width: 370px;" />
+            <el-select v-model="form.status" filterable placeholder="请选择">
+              <el-option
+                v-for="item in dict.STATUS"
+                :key="item.id"
+                :label="item.label"
+                :value="item.value" />
+            </el-select>
           </el-form-item>
-          <el-form-item label="创建人">
+          <!--<el-form-item label="创建人">
             <el-input v-model="form.crtUserCode" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="创建机构">
@@ -48,7 +66,7 @@
           </el-form-item>
           <el-form-item label="修改日期">
             <el-input v-model="form.updDate" style="width: 370px;" />
-          </el-form-item>
+          </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
@@ -62,16 +80,32 @@
         <el-table-column v-if="columns.visible('categoryId')" prop="categoryId" label="参数类型" />
         <el-table-column v-if="columns.visible('parmCode')" prop="parmCode" label="参数编号" />
         <el-table-column v-if="columns.visible('parmName')" prop="parmName" label="参数名称" />
-        <el-table-column v-if="columns.visible('parmType')" prop="parmType" label="参数值类型" />
+        <el-table-column v-if="columns.visible('parmType')" prop="parmType" label="参数值类型">
+          <template slot-scope="scope">
+            {{ dict.label.PARM_TYPE[scope.row.parmType] }}
+          </template>
+        </el-table-column>
         <el-table-column v-if="columns.visible('parmValue')" prop="parmValue" label="参数值" />
         <el-table-column v-if="columns.visible('parmDesc')" prop="parmDesc" label="参数描述" />
-        <el-table-column v-if="columns.visible('status')" prop="status" label="状态(1-启用，0-停用)" />
+        <el-table-column v-if="columns.visible('status')" prop="status" label="状态(1-启用，0-停用)">
+          <template slot-scope="scope">
+            {{ dict.label.STATUS[scope.row.status] }}
+          </template>
+        </el-table-column>
         <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建人" />
-        <el-table-column v-if="columns.visible('crtOrgCode')" prop="crtOrgCode" label="创建机构" />
-        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" label="创建日期" />
+        <!--<el-table-column v-if="columns.visible('crtOrgCode')" prop="crtOrgCode" label="创建机构" />-->
+        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" width="140" label="创建日期">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.crtDate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode" label="修改人" />
-        <el-table-column v-if="columns.visible('updOrgCode')" prop="updOrgCode" label="修改机构" />
-        <el-table-column v-if="columns.visible('updDate')" prop="updDate" label="修改日期" />
+        <!--<el-table-column v-if="columns.visible('updOrgCode')" prop="updOrgCode" label="修改机构" />-->
+        <el-table-column v-if="columns.visible('updDate')" prop="updDate" width="140" label="修改日期">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.updDate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-permission="['admin','indParameter:edit','indParameter:del']" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <udOperation
@@ -96,12 +130,13 @@ import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 
 // crud交由presenter持有
-const defaultCrud = CRUD({ title: 'indicators', url: crudIndParameter.url, sort: 'id,desc', crudMethod: { ...crudIndParameter.method }})
+const defaultCrud = CRUD({ title: '参数', url: crudIndParameter.url, sort: 'id,desc', crudMethod: { ...crudIndParameter.method }})
 const defaultForm = { id: null, categoryId: null, parmCode: null, parmName: null, parmType: null, parmValue: null, parmDesc: null, status: null, crtUserCode: null, crtOrgCode: null, crtDate: null, updUserCode: null, updOrgCode: null, updDate: null }
 export default {
   name: 'IndParameter',
   components: { pagination, crudOperation, rrOperation, udOperation },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
+  dicts: ['STATUS','PARM_TYPE'],
   data() {
     return {
       permission: {

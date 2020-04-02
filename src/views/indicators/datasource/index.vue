@@ -2,6 +2,14 @@
   <div class="app-container">
     <!--工具栏-->
     <div class="head-container">
+    <div v-if="crud.props.searchToggle">
+      <!-- 搜索 -->
+      <el-input v-model="query.datasourceName" clearable size="small" placeholder="数据源名称" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+      <el-select v-model="query.datasourceType" clearable size="small" placeholder="数据库类型" class="filter-item" style="width: 90px" @change="crud.toQuery">
+        <el-option v-for="item in dict.DATASOURCE_TYPE" :key="item.id" :label="item.label" :value="item.value" />
+      </el-select>
+      <rrOperation :crud="crud" />
+    </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
@@ -37,7 +45,7 @@
           <el-form-item label="描述">
             <el-input v-model="form.datasourceDesc" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="创建用户">
+          <!--<el-form-item label="创建用户">
             <el-input v-model="form.crtUserCode" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="创建机构">
@@ -54,10 +62,7 @@
           </el-form-item>
           <el-form-item label="修改时间">
             <el-input v-model="form.updDate" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="数据源ID">
-            <el-input v-model="form.id" style="width: 370px;" />
-          </el-form-item>
+          </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
@@ -80,11 +85,19 @@
         <el-table-column v-if="columns.visible('datasourcePassword')" prop="datasourcePassword" label="密码" />
         <el-table-column v-if="columns.visible('datasourceDesc')" prop="datasourceDesc" label="描述" />
         <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建用户" />
-        <el-table-column v-if="columns.visible('crtOrgCode')" prop="crtOrgCode" label="创建机构" />
-        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" label="创建时间" />
+        <!--<el-table-column v-if="columns.visible('crtOrgCode')" prop="crtOrgCode" label="创建机构" />-->
+        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" width="140" label="创建时间">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.crtDate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode" label="修改用户" />
-        <el-table-column v-if="columns.visible('updOrgCode')" prop="updOrgCode" label="修改机构" />
-        <el-table-column v-if="columns.visible('updDate')" prop="updDate" label="修改时间" />
+        <!--<el-table-column v-if="columns.visible('updOrgCode')" prop="updOrgCode" label="修改机构" />-->
+        <el-table-column v-if="columns.visible('updDate')" prop="updDate" width="140" label="修改时间">
+          <template slot-scope="scope">
+            <span>{{ parseTime(scope.row.updDate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column v-if="columns.visible('id')" prop="id" label="数据源ID" />
         <el-table-column v-permission="['admin','indDatasource:edit','indDatasource:del']" label="操作" width="150px" align="center">
           <template slot-scope="scope">
