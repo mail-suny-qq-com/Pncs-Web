@@ -105,8 +105,8 @@
         <!--<el-table-column v-if="columns.visible('crtDate')" prop="crtDate" width="140" label="创建日期">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.crtDate) }}</span>
-          </template>-->
-        </el-table-column>
+          </template>
+        </el-table-column>-->
         <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode" label="修改人" />
         <!--<el-table-column v-if="columns.visible('updOrgCode')" prop="updOrgCode" label="修改机构" />-->
         <el-table-column v-if="columns.visible('updDate')" prop="updDate" width="140" label="修改日期">
@@ -157,10 +157,29 @@ export default {
         del: ['admin', 'indParameter:del']
       },
       rules: {
-        id: [
-          { required: true, message: '参数ID不能为空', trigger: 'blur' }
+        categoryId: [
+          { required: true, message: '参数类型不能为空', trigger: 'blur' }
+        ],
+        parmCode: [
+          { required: true, message: '参数编号不能为空', trigger: 'blur' }
+        ],
+        parmName: [
+          { required: true, message: '参数名称不能为空', trigger: 'blur' }
+        ],
+        parmType: [
+          { required: true, message: '参数值类型不能为空', trigger: 'blur' }
+        ],
+        parmValue: [
+          { required: true, message: '参数值不能为空', trigger: 'blur' }
+        ],
+        parmDesc: [
+          { required: true, message: '参数描述不能为空', trigger: 'blur' }
+        ],
+        status: [
+          { required: true, message: '状态不能为空', trigger: 'blur' }
         ]
-      }    }
+      }
+      }
   },
   methods: {
     // 获取数据前设置好接口地址
@@ -171,7 +190,8 @@ export default {
       console.log("========handleCategoryClick====>",data)
     },
     dateFormat(row){
-        return moment(row.crtDate).format('YYYY-MM-DD HH:mm:ss');
+        return moment(row.crtDate).format('YYYY-MM-DD');
+        //return moment(row.crtDate).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }
