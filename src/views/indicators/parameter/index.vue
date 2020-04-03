@@ -23,16 +23,16 @@
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="参数类型">
+          <!--<el-form-item label="参数类型" prop="categoryId">
             <el-input v-model="form.categoryId" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="参数编号">
+          </el-form-item>-->
+          <el-form-item label="参数编号" prop="parmCode">
             <el-input v-model="form.parmCode" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="参数名称">
+          <el-form-item label="参数名称" prop="parmName">
             <el-input v-model="form.parmName" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="参数值类型">
+          <el-form-item label="参数值类型" prop="parmType">
             <el-select v-model="form.parmType" filterable placeholder="请选择">
               <el-option
                 v-for="item in dict.PARM_TYPE"
@@ -41,13 +41,13 @@
                 :value="item.value" />
             </el-select>
           </el-form-item>
-          <el-form-item label="参数值">
+          <el-form-item label="参数值" prop="parmValue">
             <el-input v-model="form.parmValue" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="参数描述">
+          <el-form-item label="参数描述" prop="parmDesc">
             <el-input v-model="form.parmDesc" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="状态(1-启用，0-停用)">
+          <el-form-item label="状态(1-启用，0-停用)" prop="status">
             <el-select v-model="form.status" filterable placeholder="请选择">
               <el-option
                 v-for="item in dict.STATUS"
@@ -84,7 +84,7 @@
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="columns.visible('id')" prop="id" label="参数ID" />
-        <el-table-column v-if="columns.visible('categoryId')" prop="categoryId" label="参数类型" />
+        <!--<el-table-column v-if="columns.visible('categoryId')" prop="categoryId" label="参数类型" />-->
         <el-table-column v-if="columns.visible('parmCode')" prop="parmCode" label="参数编号" />
         <el-table-column v-if="columns.visible('parmName')" prop="parmName" label="参数名称" />
         <el-table-column v-if="columns.visible('parmType')" prop="parmType" label="参数值类型">
@@ -157,9 +157,6 @@ export default {
         del: ['admin', 'indParameter:del']
       },
       rules: {
-        categoryId: [
-          { required: true, message: '参数类型不能为空', trigger: 'blur' }
-        ],
         parmCode: [
           { required: true, message: '参数编号不能为空', trigger: 'blur' }
         ],
@@ -186,12 +183,26 @@ export default {
     [CRUD.HOOK.beforeRefresh]() {
       return true
     },
+    [CRUD.HOOK.beforeToAdd](){
+      if(!this.form.categoryId){
+        this.crud.notify('请选择分类', CRUD.NOTIFICATION_TYPE.ERROR)
+        return false;
+      }
+      if(this.form.categoryId=="0"){
+        this.crud.notify('根节点不能添加', CRUD.NOTIFICATION_TYPE.ERROR)
+        return false;
+      }
+    },
     handleCategoryClick(data){
-      console.log("========handleCategoryClick====>",data)
+      //console.log("========handleCategoryClick====>",data)
+      this.crud.form.categoryId = data.id
+      this.crud.query.categoryId = data.id
+      this.form.categoryId = data.id
+      this.crud.refresh();
     },
     dateFormat(row){
-        return moment(row.crtDate).format('YYYY-MM-DD');
-        //return moment(row.crtDate).format('YYYY-MM-DD HH:mm:ss');
+        //return moment(row.crtDate).format('YYYY-MM-DD');
+        return moment(row.crtDate).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }
