@@ -101,10 +101,11 @@
         </el-table-column>
         <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建人" />
         <!--<el-table-column v-if="columns.visible('crtOrgCode')" prop="crtOrgCode" label="创建机构" />-->
-        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" width="140" label="创建日期">
+        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" label="创建日期" :formatter="dateFormat" />
+        <!--<el-table-column v-if="columns.visible('crtDate')" prop="crtDate" width="140" label="创建日期">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.crtDate) }}</span>
-          </template>
+          </template>-->
         </el-table-column>
         <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode" label="修改人" />
         <!--<el-table-column v-if="columns.visible('updOrgCode')" prop="updOrgCode" label="修改机构" />-->
@@ -142,6 +143,7 @@ import category from '../category/category'
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '参数', url: crudIndParameter.url, sort: 'id,desc', crudMethod: { ...crudIndParameter.method }})
 const defaultForm = { id: null, categoryId: null, parmCode: null, parmName: null, parmType: null, parmValue: null, parmDesc: null, status: null, crtUserCode: null, crtOrgCode: null, crtDate: null, updUserCode: null, updOrgCode: null, updDate: null }
+let moment = require("moment");
 export default {
   name: 'IndParameter',
   components: { pagination, crudOperation, rrOperation, udOperation,category },
@@ -167,6 +169,9 @@ export default {
     },
     handleCategoryClick(data){
       console.log("========handleCategoryClick====>",data)
+    },
+    dateFormat(date){
+        return moment(date).format('YYYY-MM-DD');
     }
   }
 }
