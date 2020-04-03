@@ -46,10 +46,12 @@
                 <el-input v-model="form.ieName"/>
               </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-             <!-- <el-form-item label="指标分类ID(树状)">
+             <!--   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
+              <el-form-item v-if="false" label="指标分类ID(树状)">
                 <el-input v-model="form.categoryId" style="width: 370px;"/>
-              </el-form-item>-->
+              </el-form-item>
+                </el-col>-->
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
               <el-form-item label="指标类别" prop="ieProp">
                 <el-select v-model="form.ieProp" filterable placeholder="请选择">
                   <el-option
@@ -201,7 +203,7 @@
             @selection-change="crud.selectionChangeHandler"
           >
             <el-table-column type="selection" width="55"/>
-            <el-table-column v-if="columns.visible('id')" prop="id" label="指标ID"/>
+            <el-table-column v-if="columns.visible('id')" prop="id" className="_default_hidden" label="指标ID"/>
             <el-table-column v-if="columns.visible('ieCode')" prop="ieCode" label="指标编号"/>
             <el-table-column v-if="columns.visible('ieName')" prop="ieName" label="指标名称"/>
             <el-table-column v-if="columns.visible('ieProp')" prop="ieProp" label="指标类别">
@@ -209,15 +211,15 @@
                 {{ dict.label.IE_PROP[scope.row.ieProp] }}
               </template>
             </el-table-column>
-            <el-table-column v-if="columns.visible('ieType')" prop="ieType" label="指标类型">
+            <!--<el-table-column v-if="columns.visible('ieType')" prop="ieType" label="指标类型">
               <template slot-scope="scope">
                 {{ dict.label.IE_TYPE[scope.row.ieType] }}
               </template>
-            </el-table-column>
-            <el-table-column v-if="columns.visible('ieDesc')" prop="ieDesc" label="指标描述"/>
-            <el-table-column v-if="columns.visible('ieRule')" prop="ieRule" label="指标业务规则"/>
-            <el-table-column v-if="columns.visible('ieDefaultValue')" prop="ieDefaultValue" label="默认值"/>
-            <el-table-column
+            </el-table-column>-->
+            <el-table-column v-if="columns.visible('ieDesc')" prop="ieDesc"  className="_default_hidden" :show-tooltip-when-overflow="true" label="指标描述"/>
+            <el-table-column v-if="columns.visible('ieRule')" prop="ieRule"  className="_default_hidden" label="指标业务规则"/>
+           <!-- <el-table-column v-if="columns.visible('ieDefaultValue')" prop="ieDefaultValue" label="默认值"/>-->
+         <!--   <el-table-column
               v-if="columns.visible('ieMethod')"
               prop="ieMethod"
               label="取值方式"
@@ -225,7 +227,7 @@
               <template slot-scope="scope">
                 {{ dict.label.IE_METHOD[scope.row.ieMethod] }}
               </template>
-            </el-table-column>
+            </el-table-column>-->
             <el-table-column v-if="columns.visible('calcFreq')" prop="calcFreq" label="计算频度">
               <template slot-scope="scope">
                 {{ dict.label.CALC_FREQ[scope.row.calcFreq] }}
@@ -243,14 +245,14 @@
             </el-table-column>
             <el-table-column v-if="columns.visible('startDate')" prop="startDate" label="生效日期"/>
             <el-table-column v-if="columns.visible('endDate')" prop="endDate" label="失效日期"/>
-            <el-table-column v-if="columns.visible('retention')" prop="retention" label="结果保留期限（1,Y）">
+            <el-table-column v-if="columns.visible('retention')" prop="retention"  className="_default_hidden" label="结果保留期限（1,Y）">
               <template slot-scope="scope">
                 {{ dict.label.RETENTION[scope.row.retention] }}
               </template>
             </el-table-column>
             <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建人"/>
-            <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" label="创建日期"/>
-            <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode" label="修改人"/>
+            <el-table-column v-if="columns.visible('crtDate')" prop="crtDate"  className="_default_hidden" label="创建日期"/>
+            <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode"  className="_default_hidden" label="修改人"/>
             <el-table-column v-if="columns.visible('updDate')" prop="updDate" label="修改日期"/>
             <el-table-column
               v-permission="['admin','indIndicatorInfo:edit','indIndicatorInfo:del']"
@@ -346,11 +348,22 @@
       [CRUD.HOOK.beforeRefresh]() {
         return true
       },
+      [CRUD.HOOK.beforeToAdd](){
+        if(!this.form.categoryId){
+          this.crud.notify('请选择分类', CRUD.NOTIFICATION_TYPE.ERROR)
+          return false;
+        }
+        if(this.form.categoryId=="0"){
+          this.crud.notify('根节点不能添加', CRUD.NOTIFICATION_TYPE.ERROR)
+          return false;
+        }
+      },
       handleCategoryClick(data) {
-        console.log('========handleCategoryClick====>', data,this.form)
+        //console.log('========handleCategoryClick====>', data,this.form)
         this.crud.form.categoryId = data.id
         this.crud.query.categoryId = data.id
         this.form.categoryId = data.id
+        this.crud.refresh();
       }
     }
   }
