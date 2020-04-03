@@ -219,7 +219,7 @@
             <el-table-column v-if="columns.visible('ieDesc')" prop="ieDesc"  className="_default_hidden" :show-tooltip-when-overflow="true" label="指标描述"/>
             <el-table-column v-if="columns.visible('ieRule')" prop="ieRule"  className="_default_hidden" label="指标业务规则"/>
            <!-- <el-table-column v-if="columns.visible('ieDefaultValue')" prop="ieDefaultValue" label="默认值"/>-->
-         <!--   <el-table-column
+           <!-- <el-table-column
               v-if="columns.visible('ieMethod')"
               prop="ieMethod"
               label="取值方式"
@@ -238,20 +238,24 @@
                 {{ dict.label.IE_STATUS[scope.row.status] }}
               </template>
             </el-table-column>
-            <el-table-column v-if="columns.visible('ieDataUnit')" prop="ieDataUnit" label="指标单位()">
+            <el-table-column v-if="columns.visible('ieDataUnit')" prop="ieDataUnit" label="指标单位">
               <template slot-scope="scope">
                 {{ dict.label.IE_DATA_UNIT[scope.row.ieDataUnit] }}
               </template>
             </el-table-column>
-            <el-table-column v-if="columns.visible('startDate')" prop="startDate" label="生效日期"/>
+            <el-table-column prop="startDate" :formatter="dateFormat" label="生效日期"/>
             <el-table-column v-if="columns.visible('endDate')" prop="endDate" label="失效日期"/>
-            <el-table-column v-if="columns.visible('retention')" prop="retention"  className="_default_hidden" label="结果保留期限（1,Y）">
+            <el-table-column v-if="columns.visible('retention')" prop="retention"  className="_default_hidden" label="结果保留期限">
               <template slot-scope="scope">
                 {{ dict.label.RETENTION[scope.row.retention] }}
               </template>
             </el-table-column>
             <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建人"/>
-            <el-table-column v-if="columns.visible('crtDate')" prop="crtDate"  className="_default_hidden" label="创建日期"/>
+            <el-table-column v-if="columns.visible('crtDate')" prop="crtDate"  className="_default_hidden" label="创建日期">
+              <template slot-scope="scope">
+                <span>{{ parseTime(scope.row.crtDate) }}</span>
+              </template>
+            </el-table-column>
             <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode"  className="_default_hidden" label="修改人"/>
             <el-table-column v-if="columns.visible('updDate')" prop="updDate" label="修改日期"/>
             <el-table-column
@@ -284,6 +288,7 @@
   import udOperation from '@crud/UD.operation'
   import pagination from '@crud/Pagination'
   import category from '../category/category'
+
   // crud交由presenter持有
   const defaultCrud = CRUD({
     title: '指标基本信息',
@@ -364,6 +369,11 @@
         this.crud.query.categoryId = data.id
         this.form.categoryId = data.id
         this.crud.refresh();
+      },
+      dateFormat(row){
+        console.log("==================111111111111>>>",row)
+        return moment(row.crtDate).format('YYYY-MM-DD');
+        //return moment(row.crtDate).format('YYYY-MM-DD HH:mm:ss');
       }
     }
   }
