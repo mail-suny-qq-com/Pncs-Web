@@ -1,5 +1,12 @@
 <template>
   <div class="app-container">
+    <el-row :gutter="20">
+          <!--侧边分类数据-->
+          <el-col :xs="9" :sm="6" :md="4" :lg="4" :xl="4">
+            <category type="base" @node-click="handleCategoryClick"/>
+          </el-col>
+          <!--用户数据-->
+          <el-col :xs="15" :sm="18" :md="20" :lg="20" :xl="20">
     <!--工具栏-->
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
@@ -118,6 +125,8 @@
       <!--分页组件-->
       <pagination />
     </div>
+    </el-col>
+  </el-row>
   </div>
 </template>
 
@@ -128,13 +137,14 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
+import category from '../category/category'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '参数', url: crudIndParameter.url, sort: 'id,desc', crudMethod: { ...crudIndParameter.method }})
 const defaultForm = { id: null, categoryId: null, parmCode: null, parmName: null, parmType: null, parmValue: null, parmDesc: null, status: null, crtUserCode: null, crtOrgCode: null, crtDate: null, updUserCode: null, updOrgCode: null, updDate: null }
 export default {
   name: 'IndParameter',
-  components: { pagination, crudOperation, rrOperation, udOperation },
+  components: { pagination, crudOperation, rrOperation, udOperation,category },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   dicts: ['STATUS','PARM_TYPE'],
   data() {
@@ -154,6 +164,9 @@ export default {
     // 获取数据前设置好接口地址
     [CRUD.HOOK.beforeRefresh]() {
       return true
+    },
+    handleCategoryClick(data){
+      console.log("========handleCategoryClick====>",data)
     }
   }
 }
