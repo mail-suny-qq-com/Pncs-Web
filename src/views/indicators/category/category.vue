@@ -164,7 +164,7 @@
       ,
       init() {
         crudIndCategory.tree(this.type, this.parentId).then(res => {
-          console.log('======crudIndCategory.init======', res)
+          //console.log('======crudIndCategory.init======', res)
           this.treeData[0].children = res.data
           //this.crud.notify(this.dict.label.user_status[val] + '成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
         }).catch(() => {
