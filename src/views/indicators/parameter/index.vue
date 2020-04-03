@@ -170,8 +170,8 @@ export default {
     handleCategoryClick(data){
       console.log("========handleCategoryClick====>",data)
     },
-    dateFormat(date){
-        return moment(date).format('YYYY-MM-DD');
+    dateFormat(row){
+        return moment(row.crtDate).format('YYYY-MM-DD HH:mm:ss');
     }
   }
 }
