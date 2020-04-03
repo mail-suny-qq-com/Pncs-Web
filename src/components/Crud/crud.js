@@ -590,13 +590,15 @@ function presenter(crud) {
     },
     mounted() {
       const columns = {}
+      //console.log("crud=====mounted>",this.$refs.table)
       this.$refs.table.columns.forEach(e => {
+        //console.log("crud=====mounted.columns>",e)
         if (!e.property || e.type !== 'default') {
           return
         }
         columns[e.property] = {
           label: e.label,
-          visible: true
+          visible: (e.className && e.className.indexOf("_default_hidden")>=0)? false:true//mod by Suny
         }
       })
       this.columns = obColumns(columns)
