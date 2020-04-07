@@ -27,7 +27,7 @@
             <el-input v-model="form.categoryId" style="width: 370px;" />
           </el-form-item>-->
           <el-form-item label="参数编号" prop="parmCode">
-            <el-input v-model="form.parmCode" style="width: 370px;" />
+            <el-input v-model="form.parmCode" style="width: 370px;" placeholder="系统自动生成..." :disabled="true" />
           </el-form-item>
           <el-form-item label="参数名称" prop="parmName">
             <el-input v-model="form.parmName" style="width: 370px;" />
@@ -47,7 +47,7 @@
           <el-form-item label="参数描述" prop="parmDesc">
             <el-input v-model="form.parmDesc" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="状态(1-启用，0-停用)" prop="status">
+          <el-form-item label="状态" prop="status">
             <el-select v-model="form.status" filterable placeholder="请选择">
               <el-option
                 v-for="item in dict.STATUS"
@@ -94,19 +94,19 @@
         </el-table-column>
         <el-table-column v-if="columns.visible('parmValue')" prop="parmValue" label="参数值" />
         <el-table-column v-if="columns.visible('parmDesc')" prop="parmDesc" label="参数描述" />
-        <el-table-column v-if="columns.visible('status')" prop="status" label="状态(1-启用，0-停用)">
+        <el-table-column v-if="columns.visible('status')" prop="status" label="状态">
           <template slot-scope="scope">
             {{ dict.label.STATUS[scope.row.status] }}
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建人" />
         <!--<el-table-column v-if="columns.visible('crtOrgCode')" prop="crtOrgCode" label="创建机构" />-->
-        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" label="创建日期" :formatter="dateFormat" />
-        <!--<el-table-column v-if="columns.visible('crtDate')" prop="crtDate" width="140" label="创建日期">
+        <!--<el-table-column v-if="columns.visible('crtDate')" prop="crtDate" label="创建日期" :formatter="dateFormat" />-->
+        <el-table-column v-if="columns.visible('crtDate')" prop="crtDate" width="140" label="创建日期">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.crtDate) }}</span>
           </template>
-        </el-table-column>-->
+        </el-table-column>
         <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode" label="修改人" />
         <!--<el-table-column v-if="columns.visible('updOrgCode')" prop="updOrgCode" label="修改机构" />-->
         <el-table-column v-if="columns.visible('updDate')" prop="updDate" width="140" label="修改日期">
@@ -157,9 +157,6 @@ export default {
         del: ['admin', 'indParameter:del']
       },
       rules: {
-        parmCode: [
-          { required: true, message: '参数编号不能为空', trigger: 'blur' }
-        ],
         parmName: [
           { required: true, message: '参数名称不能为空', trigger: 'blur' }
         ],
