@@ -21,41 +21,59 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
-        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="50%">
+        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
           <!--<el-form-item label="参数类型" prop="categoryId">
-            <el-input v-model="form.categoryId" style="width: 370px;" />
+            <el-input v-model="form.categoryId" style="width: 100px;" />
           </el-form-item>-->
-          <el-form-item label="参数编号" prop="parmCode">
-            <el-input v-model="form.parmCode" style="width: 370px;" placeholder="系统自动生成..." :disabled="true" />
-          </el-form-item>
-          <el-form-item label="参数名称" prop="parmName">
-            <el-input v-model="form.parmName" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="参数值类型" prop="parmType">
-            <el-select v-model="form.parmType" filterable placeholder="请选择">
-              <el-option
-                v-for="item in dict.PARM_TYPE"
-                :key="item.id"
-                :label="item.label"
-                :value="item.value" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="参数值" prop="parmValue">
-            <el-input v-model="form.parmValue" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="参数描述" prop="parmDesc">
-            <el-input v-model="form.parmDesc" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="状态" prop="status">
-            <el-select v-model="form.status" filterable placeholder="请选择">
-              <el-option
-                v-for="item in dict.STATUS"
-                :key="item.id"
-                :label="item.label"
-                :value="item.value" />
-            </el-select>
-          </el-form-item>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="参数编号" prop="parmCode">
+                <el-input v-model="form.parmCode" style="width: 250px;" placeholder="系统自动生成..." :disabled="true" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="参数名称" prop="parmName">
+                <el-input v-model="form.parmName" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="参数值类型" prop="parmType">
+                <el-select v-model="form.parmType" filterable placeholder="请选择" style="width: 250px;">
+                  <el-option
+                    v-for="item in dict.PARM_TYPE"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="参数值" prop="parmValue">
+                <el-input v-model="form.parmValue" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="参数描述" prop="parmDesc">
+                <el-input v-model="form.parmDesc" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="状态" prop="status">
+                <el-select v-model="form.status" filterable placeholder="请选择" style="width: 250px;">
+                  <el-option
+                    v-for="item in dict.STATUS"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <!--<el-form-item label="创建人">
             <el-input v-model="form.crtUserCode" style="width: 370px;" />
           </el-form-item>

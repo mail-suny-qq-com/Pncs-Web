@@ -13,38 +13,62 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
-        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="数据源名称" prop="datasourceName">
-            <el-input v-model="form.datasourceName" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="数据库类型" prop="datasourceType">
-            <el-select v-model="form.datasourceType" filterable placeholder="请选择">
-              <el-option
-                v-for="item in dict.DATASOURCE_TYPE"
-                :key="item.id"
-                :label="item.label"
-                :value="item.value" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="数据库SCHEMA" prop="datasourceSchema">
-            <el-input v-model="form.datasourceSchema" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="数据库驱动" prop="datasourceDriver">
-            <el-input v-model="form.datasourceDriver" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="连接URL" prop="datasourceUrl">
-            <el-input v-model="form.datasourceUrl" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="用户名" prop="datasourceUser">
-            <el-input v-model="form.datasourceUser" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="密码" prop="datasourcePassword">
-            <el-input v-model="form.datasourcePassword" style="width: 370px;" />
-          </el-form-item>
-          <el-form-item label="描述">
-            <el-input v-model="form.datasourceDesc" style="width: 370px;" />
-          </el-form-item>
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="50%">
+        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="数据源名称" prop="datasourceName">
+                <el-input v-model="form.datasourceName" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="数据库类型" prop="datasourceType">
+                <el-select v-model="form.datasourceType" filterable placeholder="请选择" style="width: 250px;">
+                  <el-option
+                    v-for="item in dict.DATASOURCE_TYPE"
+                    :key="item.id"
+                    :label="item.label"
+                    :value="item.value" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="数据库SCHEMA" prop="datasourceSchema">
+                <el-input v-model="form.datasourceSchema" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="数据库驱动" prop="datasourceDriver">
+                <el-input v-model="form.datasourceDriver" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="连接URL" prop="datasourceUrl">
+                <el-input v-model="form.datasourceUrl" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="用户名" prop="datasourceUser">
+                <el-input v-model="form.datasourceUser" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="密码" prop="datasourcePassword">
+                <el-input v-model="form.datasourcePassword" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="描述">
+                <el-input v-model="form.datasourceDesc" style="width: 250px;" />
+              </el-form-item>
+            </el-col>
+           </el-row>
           <!--<el-form-item label="创建用户">
             <el-input v-model="form.crtUserCode" style="width: 370px;" />
           </el-form-item>
