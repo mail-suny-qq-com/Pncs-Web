@@ -21,7 +21,7 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="50%">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="60%">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
           <!--<el-form-item label="参数类型" prop="categoryId">
             <el-input v-model="form.categoryId" style="width: 100px;" />
@@ -101,7 +101,7 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column v-if="columns.visible('id')" prop="id" label="参数ID" />
+        <el-table-column v-if="columns.visible('id')" prop="id" label="参数ID" className="_default_hidden" />
         <!--<el-table-column v-if="columns.visible('categoryId')" prop="categoryId" label="参数类型" />-->
         <el-table-column v-if="columns.visible('parmCode')" prop="parmCode" label="参数编号" />
         <el-table-column v-if="columns.visible('parmName')" prop="parmName" label="参数名称" />

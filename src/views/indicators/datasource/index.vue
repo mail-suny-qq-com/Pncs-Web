@@ -13,7 +13,7 @@
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
-      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="50%">
+      <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="60%">
         <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
           <el-row>
             <el-col :span="12">
@@ -60,7 +60,9 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="密码" prop="datasourcePassword">
-                <el-input v-model="form.datasourcePassword" style="width: 250px;" />
+                <el-input :type="passw" v-model="form.datasourcePassword" style="width: 250px;">
+                  <i slot="suffix" :class="icon" @click="showPass"></i>
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -122,7 +124,7 @@
             <span>{{ parseTime(scope.row.updDate) }}</span>
           </template>
         </el-table-column>
-        <el-table-column v-if="columns.visible('id')" prop="id" label="数据源ID" />
+        <el-table-column v-if="columns.visible('id')" prop="id" label="数据源ID" className="_default_hidden" />
         <el-table-column v-permission="['admin','indDatasource:edit','indDatasource:del']" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <udOperation
@@ -156,6 +158,8 @@ export default {
   dicts: ['DATASOURCE_TYPE'],
   data() {
     return {
+      passw:"password",
+      icon:"el-input__icon el-icon-view",
       permission: {
         add: ['admin', 'indDatasource:add'],
         edit: ['admin', 'indDatasource:edit'],
@@ -189,6 +193,18 @@ export default {
     // 获取数据前设置好接口地址
     [CRUD.HOOK.beforeRefresh]() {
       return true
+    },
+    //密码的隐藏和显示
+    showPass(){
+　　　　　　　　　　//点击图标是密码隐藏或显示
+       if( this.passw=="text"){
+           this.passw="password";
+           //更换图标
+           //this.icon="el-input__icon el-icon-view";
+       }else {
+           this.passw="text";
+           //this.icon="el-input__icon el-icon-view";
+       };
     }
   }
 }
