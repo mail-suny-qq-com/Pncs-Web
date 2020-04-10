@@ -373,7 +373,7 @@
       handleCategoryClick(data) {
         //console.log('========handleCategoryClick====>', data,this.form)
         this.crud.form.categoryId = data.id
-        this.crud.query.categoryId = data.id
+        this.crud.query.categoryIds = data.childrenIds;
         this.form.categoryId = data.id
         this.crud.refresh()
       },
