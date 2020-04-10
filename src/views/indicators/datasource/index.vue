@@ -108,7 +108,7 @@
         <el-table-column v-if="columns.visible('datasourceDriver')" prop="datasourceDriver" label="数据库驱动" />
         <el-table-column v-if="columns.visible('datasourceUrl')" prop="datasourceUrl" label="连接URL" />
         <el-table-column v-if="columns.visible('datasourceUser')" prop="datasourceUser" label="用户名" />
-        <el-table-column v-if="columns.visible('datasourcePassword')" prop="datasourcePassword" label="密码" />
+        <!--<el-table-column v-if="columns.visible('datasourcePassword')" prop="datasourcePassword" label="密码" />-->
         <el-table-column v-if="columns.visible('datasourceDesc')" prop="datasourceDesc" label="描述" />
         <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建用户" />
         <!--<el-table-column v-if="columns.visible('crtOrgCode')" prop="crtOrgCode" label="创建机构" />-->
