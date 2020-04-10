@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <!--侧边分类数据-->
       <el-col :xs="9" :sm="6" :md="4" :lg="4" :xl="4">
-        <category type="base" @node-click="handleCategoryClick"/>
+        <category type="1" @node-click="handleCategoryClick"/>
       </el-col>
       <!--用户数据-->
       <el-col :xs="15" :sm="18" :md="20" :lg="20" :xl="20">
@@ -34,100 +34,100 @@
             <el-form ref="form" :model="form" :rules="rules" size="small" label-width="120px">
               <el-row :gutter="5">
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-             <!-- <el-form-item label="指标ID" prop="id">
-                <el-input v-model="form.id" style="width: 370px;"/>
-              </el-form-item>-->
-              <el-form-item label="指标编号" prop="ieCode">
-                <el-input v-model="form.ieCode" placeholder="系统自动生成..." :disabled="true"/>
-              </el-form-item>
+                  <!-- <el-form-item label="指标ID" prop="id">
+                     <el-input v-model="form.id" style="width: 370px;"/>
+                   </el-form-item>-->
+                  <el-form-item label="指标编号" prop="ieCode">
+                    <el-input v-model="form.ieCode" placeholder="系统自动生成..." :disabled="true"/>
+                  </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item label="指标名称" prop="ieName">
-                <el-input v-model="form.ieName"/>
-              </el-form-item>
+                  <el-form-item label="指标名称" prop="ieName">
+                    <el-input v-model="form.ieName"/>
+                  </el-form-item>
                 </el-col>
-             <!--   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item v-if="false" label="指标分类ID(树状)">
-                <el-input v-model="form.categoryId" style="width: 370px;"/>
-              </el-form-item>
-                </el-col>-->
+                <!--   <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
+                 <el-form-item v-if="false" label="指标分类ID(树状)">
+                   <el-input v-model="form.categoryId" style="width: 370px;"/>
+                 </el-form-item>
+                   </el-col>-->
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item label="指标类别" prop="ieProp">
-                <el-select v-model="form.ieProp" filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in dict.IE_PROP"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
-                </el-col>
-
-                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item label="默认值">
-                <el-input v-model="form.ieDefaultValue" />
-              </el-form-item>
-                </el-col>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-             <!-- <el-form-item label="取值方式">
-                <el-select v-model="form.ieMethod" filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in dict.IE_METHOD"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>-->
-              <el-form-item label="计算频度">
-                <el-select v-model="form.calcFreq" filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in dict.CALC_FREQ"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
+                  <el-form-item label="指标类别" prop="ieProp">
+                    <el-select v-model="form.ieProp" filterable placeholder="请选择">
+                      <el-option
+                        v-for="item in dict.IE_PROP"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </el-form-item>
                 </el-col>
 
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item label="指标单位" prop="ieDataUnit">
-                <el-select v-model="form.ieDataUnit" filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in dict.IE_DATA_UNIT"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
+                  <el-form-item label="默认值">
+                    <el-input v-model="form.ieDefaultValue"/>
+                  </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-             <!-- <el-form-item label="指标层级(根据依赖关系确定层级，基础指标为0)">
-                <el-input v-model="form.ieLevel" style="width: 370px;"/>
-              </el-form-item>-->
-              <el-form-item label="生效日期">
-                <el-date-picker v-model="form.startDate"/>
-              </el-form-item>
+                  <!-- <el-form-item label="取值方式">
+                     <el-select v-model="form.ieMethod" filterable placeholder="请选择">
+                       <el-option
+                         v-for="item in dict.IE_METHOD"
+                         :key="item.id"
+                         :label="item.label"
+                         :value="item.value"
+                       />
+                     </el-select>
+                   </el-form-item>-->
+                  <el-form-item label="计算频度">
+                    <el-select v-model="form.calcFreq" filterable placeholder="请选择">
+                      <el-option
+                        v-for="item in dict.CALC_FREQ"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
+                  <el-form-item label="指标单位" prop="ieDataUnit">
+                    <el-select v-model="form.ieDataUnit" filterable placeholder="请选择">
+                      <el-option
+                        v-for="item in dict.IE_DATA_UNIT"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item label="失效日期">
-                <el-date-picker v-model="form.endDate"/>
-              </el-form-item>
+                  <!-- <el-form-item label="指标层级(根据依赖关系确定层级，基础指标为0)">
+                     <el-input v-model="form.ieLevel" style="width: 370px;"/>
+                   </el-form-item>-->
+                  <el-form-item label="生效日期">
+                    <el-date-picker v-model="form.startDate"/>
+                  </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item label="结果保留期限">
-                <el-select v-model="form.retention" filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in dict.RETENTION"
-                    :key="item.id"
-                    :label="item.label"
-                    :value="item.value"
-                  />
-                </el-select>
-              </el-form-item>
+                  <el-form-item label="失效日期">
+                    <el-date-picker v-model="form.endDate"/>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
+                  <el-form-item label="结果保留期限">
+                    <el-select v-model="form.retention" filterable placeholder="请选择">
+                      <el-option
+                        v-for="item in dict.RETENTION"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.value"
+                      />
+                    </el-select>
+                  </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
                   <el-form-item label="指标状态">
@@ -158,33 +158,33 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
-              <el-form-item label="指标描述">
-                <el-input v-model="form.ieDesc" />
-              </el-form-item>
-         <!--     <el-form-item label="审核流程ID">
-                <el-input v-model="form.processInstanceId" style="width: 370px;"/>
-              </el-form-item>-->
-              <!--<el-form-item label="管理部门(解释部门)">
-                <el-input v-model="form.manageDept"/>
-              </el-form-item>-->
-             <!-- <el-form-item label="创建人">
-                <el-input v-model="form.crtUserCode" style="width: 370px;"/>
-              </el-form-item>
-              <el-form-item label="创建机构">
-                <el-input v-model="form.crtOrgCode" style="width: 370px;"/>
-              </el-form-item>
-              <el-form-item label="创建日期">
-                <el-input v-model="form.crtDate" style="width: 370px;"/>
-              </el-form-item>
-              <el-form-item label="修改人">
-                <el-input v-model="form.updUserCode" style="width: 370px;"/>
-              </el-form-item>
-              <el-form-item label="修改机构">
-                <el-input v-model="form.updOrgCode" style="width: 370px;"/>
-              </el-form-item>
-              <el-form-item label="修改日期">
-                <el-input v-model="form.updDate" style="width: 370px;"/>
-              </el-form-item>-->
+                  <el-form-item label="指标描述">
+                    <el-input v-model="form.ieDesc"/>
+                  </el-form-item>
+                  <!--     <el-form-item label="审核流程ID">
+                         <el-input v-model="form.processInstanceId" style="width: 370px;"/>
+                       </el-form-item>-->
+                  <!--<el-form-item label="管理部门(解释部门)">
+                    <el-input v-model="form.manageDept"/>
+                  </el-form-item>-->
+                  <!-- <el-form-item label="创建人">
+                     <el-input v-model="form.crtUserCode" style="width: 370px;"/>
+                   </el-form-item>
+                   <el-form-item label="创建机构">
+                     <el-input v-model="form.crtOrgCode" style="width: 370px;"/>
+                   </el-form-item>
+                   <el-form-item label="创建日期">
+                     <el-input v-model="form.crtDate" style="width: 370px;"/>
+                   </el-form-item>
+                   <el-form-item label="修改人">
+                     <el-input v-model="form.updUserCode" style="width: 370px;"/>
+                   </el-form-item>
+                   <el-form-item label="修改机构">
+                     <el-input v-model="form.updOrgCode" style="width: 370px;"/>
+                   </el-form-item>
+                   <el-form-item label="修改日期">
+                     <el-input v-model="form.updDate" style="width: 370px;"/>
+                   </el-form-item>-->
                 </el-col>
               </el-row>
             </el-form>
@@ -203,7 +203,7 @@
             @selection-change="crud.selectionChangeHandler"
           >
             <el-table-column type="selection" width="55"/>
-            <el-table-column v-if="columns.visible('id')" prop="id" className="_default_hidden" label="指标ID"/>
+            <el-table-column v-if="columns.visible('id')" prop="id" label="指标ID"/>
             <el-table-column v-if="columns.visible('ieCode')" prop="ieCode" label="指标编号"/>
             <el-table-column v-if="columns.visible('ieName')" prop="ieName" label="指标名称"/>
             <el-table-column v-if="columns.visible('ieProp')" prop="ieProp" label="指标类别">
@@ -216,18 +216,19 @@
                 {{ dict.label.IE_TYPE[scope.row.ieType] }}
               </template>
             </el-table-column>-->
-            <el-table-column v-if="columns.visible('ieDesc')" prop="ieDesc"  className="_default_hidden" :show-tooltip-when-overflow="true" label="指标描述"/>
-            <el-table-column v-if="columns.visible('ieRule')" prop="ieRule"  className="_default_hidden" label="指标业务规则"/>
-           <!-- <el-table-column v-if="columns.visible('ieDefaultValue')" prop="ieDefaultValue" label="默认值"/>-->
-           <!-- <el-table-column
-              v-if="columns.visible('ieMethod')"
-              prop="ieMethod"
-              label="取值方式"
-            >
-              <template slot-scope="scope">
-                {{ dict.label.IE_METHOD[scope.row.ieMethod] }}
-              </template>
-            </el-table-column>-->
+            <el-table-column v-if="columns.visible('ieDesc')" prop="ieDesc" :show-tooltip-when-overflow="true"
+                             label="指标描述"/>
+            <el-table-column v-if="columns.visible('ieRule')" prop="ieRule" label="指标业务规则"/>
+            <!-- <el-table-column v-if="columns.visible('ieDefaultValue')" prop="ieDefaultValue" label="默认值"/>-->
+            <!-- <el-table-column
+               v-if="columns.visible('ieMethod')"
+               prop="ieMethod"
+               label="取值方式"
+             >
+               <template slot-scope="scope">
+                 {{ dict.label.IE_METHOD[scope.row.ieMethod] }}
+               </template>
+             </el-table-column>-->
             <el-table-column v-if="columns.visible('calcFreq')" prop="calcFreq" label="计算频度">
               <template slot-scope="scope">
                 {{ dict.label.CALC_FREQ[scope.row.calcFreq] }}
@@ -243,20 +244,17 @@
                 {{ dict.label.IE_DATA_UNIT[scope.row.ieDataUnit] }}
               </template>
             </el-table-column>
-            <el-table-column prop="startDate" :formatter="dateFormat" label="生效日期"/>
+            <el-table-column prop="startDate" :formatter="dateColumnFormat" label="生效日期"/>
             <el-table-column v-if="columns.visible('endDate')" prop="endDate" label="失效日期"/>
-            <el-table-column v-if="columns.visible('retention')" prop="retention"  className="_default_hidden" label="结果保留期限">
+            <el-table-column v-if="columns.visible('retention')" prop="retention" label="结果保留期限">
               <template slot-scope="scope">
                 {{ dict.label.RETENTION[scope.row.retention] }}
               </template>
             </el-table-column>
             <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建人"/>
-            <el-table-column v-if="columns.visible('crtDate')" prop="crtDate"  className="_default_hidden" label="创建日期">
-              <template slot-scope="scope">
-                <span>{{ parseTime(scope.row.crtDate) }}</span>
-              </template>
+            <el-table-column v-if="columns.visible('crtDate')"  :formatter="timeColumnFormat"  prop="crtDate" label="创建日期">
             </el-table-column>
-            <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode"  className="_default_hidden" label="修改人"/>
+            <el-table-column v-if="columns.visible('updUserCode')" prop="updUserCode" label="修改人"/>
             <el-table-column v-if="columns.visible('updDate')" prop="updDate" label="修改日期"/>
             <el-table-column
               v-permission="['admin','indIndicatorInfo:edit','indIndicatorInfo:del']"
@@ -288,6 +286,7 @@
   import udOperation from '@crud/UD.operation'
   import pagination from '@crud/Pagination'
   import category from '../category/category'
+
 
   // crud交由presenter持有
   const defaultCrud = CRUD({
@@ -330,6 +329,13 @@
     dicts: ['IE_PROP', 'IE_TYPE', 'IE_METHOD', 'CALC_FREQ', 'IE_STATUS', 'IE_DATA_UNIT', 'RETENTION'],
     data() {
       return {
+        table: {
+          columns: {
+            id: 'hidden',
+            crtOrgCode:'hidden',
+            updOrgCode:'hidden'
+          }
+        },
         permission: {
           add: ['admin', 'indIndicatorInfo:add'],
           edit: ['admin', 'indIndicatorInfo:edit'],
@@ -344,37 +350,38 @@
           ],
           ieDataUnit: [
             { required: true, message: '指标单位不能为空', trigger: 'change' }
-          ],
+          ]
         }
       }
     },
     methods: {
       // 获取数据前设置好接口地址
       [CRUD.HOOK.beforeRefresh]() {
+        this.query.ieType='1';
         return true
       },
-      [CRUD.HOOK.beforeToAdd](){
-        if(!this.form.categoryId){
+      [CRUD.HOOK.beforeToAdd]() {
+        if (!this.form.categoryId) {
           this.crud.notify('请选择分类', CRUD.NOTIFICATION_TYPE.ERROR)
-          return false;
+          return false
         }
-        if(this.form.categoryId=="0"){
+        if (this.form.categoryId == '0') {
           this.crud.notify('根节点不能添加', CRUD.NOTIFICATION_TYPE.ERROR)
-          return false;
+          return false
         }
       },
       handleCategoryClick(data) {
         //console.log('========handleCategoryClick====>', data,this.form)
         this.crud.form.categoryId = data.id
-        this.crud.query.categoryId = data.id
+        this.crud.query.categoryIds = data.childrenIds;
         this.form.categoryId = data.id
-        this.crud.refresh();
+        this.crud.refresh()
       },
-      dateFormat(row){
-        console.log("==================111111111111>>>",row)
-        return moment(row.crtDate).format('YYYY-MM-DD');
+      /*dateFormat(row) {
+        //console.log("==================111111111111>>>",row)
+        return moment(row.crtDate).format('YYYY-MM-DD')
         //return moment(row.crtDate).format('YYYY-MM-DD HH:mm:ss');
-      }
+      }*/
     }
   }
 </script>

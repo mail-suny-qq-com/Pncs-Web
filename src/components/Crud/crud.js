@@ -590,15 +590,19 @@ function presenter(crud) {
     },
     mounted() {
       const columns = {}
-      //console.log("crud=====mounted>",this.$refs.table)
+      let hiddenColumns={};
+      //console.log("crud=====mounted>",this.table.columns)
+      if(this.table && this.table.columns){
+        hiddenColumns=this.table.columns;
+      }
       this.$refs.table.columns.forEach(e => {
-        //console.log("crud=====mounted.columns>",e)
+        //console.log("crud=====mounted.columns>",e,hiddenColumns[e.property])
         if (!e.property || e.type !== 'default') {
           return
         }
         columns[e.property] = {
           label: e.label,
-          visible: (e.className && e.className.indexOf("_default_hidden")>=0)? false:true//mod by Suny
+          visible:  (hiddenColumns[e.property] && hiddenColumns[e.property]!='visible')? false:true//mod by Suny
         }
       })
       this.columns = obColumns(columns)
