@@ -160,7 +160,7 @@ import category from '../category/category'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '参数', url: crudIndParameter.url, sort: 'id,desc', crudMethod: { ...crudIndParameter.method }})
-const defaultForm = { id: null, categoryId: null, parmCode: null, parmName: null, parmType: null, parmValue: null, parmDesc: null, status: null, crtUserCode: null, crtOrgCode: null, crtDate: null, updUserCode: null, updOrgCode: null, updDate: null }
+const defaultForm = { id: null, categoryId: null, parmCode: null, parmName: null, parmType: null, parmValue: null, parmDesc: null, status: "1", crtUserCode: null, crtOrgCode: null, crtDate: null, updUserCode: null, updOrgCode: null, updDate: null }
 let moment = require("moment");
 export default {
   name: 'IndParameter',
