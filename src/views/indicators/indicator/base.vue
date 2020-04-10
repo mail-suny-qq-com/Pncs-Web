@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <!--侧边分类数据-->
       <el-col :xs="9" :sm="6" :md="4" :lg="4" :xl="4">
-        <category type="base" @node-click="handleCategoryClick"/>
+        <category type="1" @node-click="handleCategoryClick"/>
       </el-col>
       <!--用户数据-->
       <el-col :xs="15" :sm="18" :md="20" :lg="20" :xl="20">
@@ -357,6 +357,7 @@
     methods: {
       // 获取数据前设置好接口地址
       [CRUD.HOOK.beforeRefresh]() {
+        this.query.ieType='1';
         return true
       },
       [CRUD.HOOK.beforeToAdd]() {
