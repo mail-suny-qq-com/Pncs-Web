@@ -101,7 +101,7 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column v-if="columns.visible('id')" prop="id" label="参数ID" className="_default_hidden" />
+        <el-table-column v-if="columns.visible('id')" prop="id" label="参数ID" />
         <!--<el-table-column v-if="columns.visible('categoryId')" prop="categoryId" label="参数类型" />-->
         <el-table-column v-if="columns.visible('parmCode')" prop="parmCode" label="参数编号" />
         <el-table-column v-if="columns.visible('parmName')" prop="parmName" label="参数名称" />
@@ -169,6 +169,11 @@ export default {
   dicts: ['STATUS','PARM_TYPE'],
   data() {
     return {
+      table: {
+        columns: {
+          id: 'hidden'
+        }
+      },
       permission: {
         add: ['admin', 'indParameter:add'],
         edit: ['admin', 'indParameter:edit'],
@@ -211,9 +216,9 @@ export default {
     handleCategoryClick(data){
       //console.log("========handleCategoryClick====>",data)
       this.crud.form.categoryId = data.id
-      this.crud.query.categoryId = data.id
+      this.crud.query.categoryIds = data.childrenIds;
       this.form.categoryId = data.id
-      this.crud.refresh();
+      this.crud.refresh()
     },
     dateFormat(row){
         //return moment(row.crtDate).format('YYYY-MM-DD');
