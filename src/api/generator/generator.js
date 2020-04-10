@@ -7,6 +7,17 @@ export function getAllTable() {
   })
 }
 
+export function getTableColumns(tableName) {
+  const params = {
+    tableName
+  }
+  return request({
+    url: 'api/generator/columns',
+    method: 'get',
+    params
+  })
+}
+
 export function generator(tableName, type) {
   return request({
     url: 'api/generator/' + tableName + '/' + type,
