@@ -19,11 +19,15 @@ export default {
   methods: {
     linkProps(url) {
       if (isExternal(url)) {
-        return {
+       /* return {
           is: 'a',
           href: url,
-          target: '_blank',
+          target: 'iframeContain',
           rel: 'noopener'
+        }*/
+        return {
+          is: 'router-link',
+          to: '/iframe'
         }
       }
       return {
