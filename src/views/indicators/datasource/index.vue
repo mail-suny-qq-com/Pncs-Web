@@ -104,7 +104,7 @@
             {{ dict.label.DATASOURCE_TYPE[scope.row.datasourceType] }}
           </template>
         </el-table-column>
-        <el-table-column v-if="columns.visible('datasourceSchema')" prop="datasourceSchema" label="数据库SCHEMA" />
+        <el-table-column v-if="columns.visible('datasourceSchema')" prop="datasourceSchema" label="数据库SCHEMA" width="120" />
         <el-table-column v-if="columns.visible('datasourceDriver')" prop="datasourceDriver" label="数据库驱动" />
         <el-table-column v-if="columns.visible('datasourceUrl')" prop="datasourceUrl" label="连接URL" />
         <el-table-column v-if="columns.visible('datasourceUser')" prop="datasourceUser" label="用户名" />

@@ -2,6 +2,12 @@
   <div class="app-container">
     <!--工具栏-->
     <div class="head-container">
+      <div v-if="crud.props.searchToggle">
+        <!-- 搜索 -->
+        <el-input v-model="query.dimCode" clearable size="small" placeholder="维度编号" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input v-model="query.dimName" clearable size="small" placeholder="维度名称" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <rrOperation :crud="crud" />
+      </div>
       <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
       <crudOperation :permission="permission" />
       <!--表单组件-->
@@ -136,11 +142,11 @@
         <el-table-column v-if="columns.visible('dimCode')" prop="dimCode" label="维度编号" />
         <el-table-column v-if="columns.visible('datasourceId')" prop="datasourceId" label="数据源ID" />
         <el-table-column v-if="columns.visible('dimName')" prop="dimName" label="维度名称" />
-        <el-table-column v-if="columns.visible('tableName')" prop="tableName" label="维表表名称" />
-        <el-table-column v-if="columns.visible('nameColumn')" prop="nameColumn" label="维度显示字段" />
-        <el-table-column v-if="columns.visible('nameColumnDesc')" prop="nameColumnDesc" label="维度显示字段描述" />
+        <el-table-column v-if="columns.visible('tableName')" prop="tableName" label="维表表名称" width="120" />
+        <el-table-column v-if="columns.visible('nameColumn')" prop="nameColumn" label="维度显示字段" width="140" />
+        <el-table-column v-if="columns.visible('nameColumnDesc')" prop="nameColumnDesc" label="维度显示字段描述" width="140" />
         <el-table-column v-if="columns.visible('codeColumn')" prop="codeColumn" label="代码字段" />
-        <el-table-column v-if="columns.visible('codeColumnDesc')" prop="codeColumnDesc" label="代码字段描述" />
+        <el-table-column v-if="columns.visible('codeColumnDesc')" prop="codeColumnDesc" label="代码字段描述" width="100" />
         <el-table-column v-if="columns.visible('pid')" prop="pid" label="父ID(预留)" />
         <el-table-column v-if="columns.visible('level')" prop="level" label="级别(预留)" />
         <el-table-column v-if="columns.visible('alias')" prop="alias" label="别名" />
@@ -192,6 +198,11 @@ export default {
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   data() {
     return {
+      table: {
+            columns: {
+              id: 'hidden'
+            }
+          },
       tableData: [],
       tableInfo: [],
       selectData: [],
@@ -229,6 +240,9 @@ export default {
     [CRUD.HOOK.beforeRefresh]() {
       return true
     },
+    [CRUD.HOOK.beforeToAdd]() {
+      this.tableInfo = null
+    },
     [CRUD.HOOK.beforeToEdit](){
          const temp1 = this.form.nameColumn
          const temp2 = this.form.nameColumnDesc
@@ -240,6 +254,9 @@ export default {
          }
          //this.form.nameColumn = this.form.nameColumn.split(',')
          //this.form.nameColumnDesc = this.form.nameColumnDesc.split(',')
+         getTableColumns(this.form.tableName).then(data => {
+           this.tableInfo = data.content
+         })
     },
     [CRUD.HOOK.beforeSubmit](){
          this.form.nameColumn = String(this.form.nameColumn)
