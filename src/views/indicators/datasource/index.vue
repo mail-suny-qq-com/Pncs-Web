@@ -91,6 +91,7 @@
           </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
+          <el-button  icon="el-icon-check"size="mini" style="float: left; padding: 6px 9px" type="primary" @click="doTest">测试</el-button>
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
@@ -147,6 +148,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
+import { test } from '@/api/indicators/indDatasource'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '数据源', url: crudIndDatasource.url, sort: 'id,desc', crudMethod: { ...crudIndDatasource.method }})
@@ -205,6 +207,17 @@ export default {
            this.passw="text";
            //this.icon="el-input__icon el-icon-view";
        };
+    },
+    doTest() {
+      test(this.form).then(data => {
+          if(data.result == "S"){
+            alert("连接成功");
+          }else{
+            alert("连接失败，请检查数据源各项参数");
+          }
+          //console.log(data)
+         //this.notify('连接成功', 'success')
+       })
     }
   }
 }
