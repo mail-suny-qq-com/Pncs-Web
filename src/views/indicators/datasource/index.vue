@@ -91,7 +91,7 @@
           </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button  icon="el-icon-check"size="mini" style="float: left; padding: 6px 9px" type="primary" @click="doTest">测试</el-button>
+          <el-button :loading="loading" icon="el-icon-loading"size="mini" style="float: left; padding: 6px 9px" type="primary" @click="doTest">测试</el-button>
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
@@ -106,8 +106,8 @@
           </template>
         </el-table-column>
         <el-table-column v-if="columns.visible('datasourceSchema')" prop="datasourceSchema" label="数据库SCHEMA" width="120" />
-        <el-table-column v-if="columns.visible('datasourceDriver')" prop="datasourceDriver" label="数据库驱动" />
-        <el-table-column v-if="columns.visible('datasourceUrl')" prop="datasourceUrl" label="连接URL" />
+        <el-table-column v-if="columns.visible('datasourceDriver')" prop="datasourceDriver" label="数据库驱动" width="140" />
+        <el-table-column v-if="columns.visible('datasourceUrl')" prop="datasourceUrl" label="连接URL" width="200" />
         <el-table-column v-if="columns.visible('datasourceUser')" prop="datasourceUser" label="用户名" />
         <!--<el-table-column v-if="columns.visible('datasourcePassword')" prop="datasourcePassword" label="密码" />-->
         <el-table-column v-if="columns.visible('datasourceDesc')" prop="datasourceDesc" label="描述" />
@@ -160,6 +160,11 @@ export default {
   dicts: ['DATASOURCE_TYPE'],
   data() {
     return {
+      table: {
+        columns: {
+          id: 'hidden'
+        }
+      },
       passw:"password",
       icon:"el-input__icon el-icon-view",
       permission: {
@@ -209,16 +214,22 @@ export default {
        };
     },
     doTest() {
-      test(this.form).then(data => {
-          if(data.result == "S"){
-            alert("连接成功");
-          }else{
-            alert("连接失败，请检查数据源各项参数");
-          }
-          //console.log(data)
-         //this.notify('连接成功', 'success')
-       })
+      this.$refs["form"].validate((valid) => {
+        if (!valid){ //rules规则校验不通过
+          return
+        }else{
+          test(this.form).then(data => {
+            //console.log(data)
+            if(data.result == "S"){
+              alert("连接成功");
+            }else{
+              alert("连接失败，请检查数据源各项参数");
+            }
+          })
+        }
+      })
     }
+
   }
 }
 </script>
