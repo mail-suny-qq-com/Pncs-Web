@@ -11,7 +11,7 @@
     computed: {
       documentPath() {
         //console.log('====pagePath====', process.env.VUE_APP_SMARTBI_ADDRESS, process.env.VUE_APP_SMARTBI_ADDRESS.replace("{moduleId}", "Database"))
-        return process.env.VUE_APP_SMARTBI_ADDRESS.replace('{moduleId}&showbanner=false', 'DataPortal&showbanner=true')
+        return process.env.VUE_APP_SMARTBI_ADDRESS+'/vision/openmodule.jsp?id=DataPortal&showbanner=true'
       }
     },
     mounted(){

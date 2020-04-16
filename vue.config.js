@@ -38,6 +38,13 @@ module.exports = {
         pathRewrite: {
           '^/auth': 'auth'
         }
+      },
+      '/smartbi':{
+        target:process.env.VUE_APP_SMARTBI_ADDRESS,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/smartbi': ''
+        }
       }
     }
   },
