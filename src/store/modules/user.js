@@ -1,13 +1,15 @@
 import { login, getInfo, logout } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import Cookies from 'js-cookie'
+
 const user = {
   state: {
     token: getToken(),
     user: {},
     roles: [],
     // 第一次加载菜单时用到
-    loadMenus: false
+    loadMenus: false,
+    smartbiUrl: ''
   },
 
   mutations: {
@@ -22,6 +24,9 @@ const user = {
     },
     SET_LOAD_MENUS: (state, loadMenus) => {
       state.loadMenus = loadMenus
+    },
+    SET_SMARTBI_URL: (state, smartbiUrl) => {
+      state.smartbiUrl = smartbiUrl
     }
   },
 
@@ -72,6 +77,9 @@ const user = {
       return new Promise((resolve, reject) => {
         commit('SET_LOAD_MENUS', false)
       })
+    },
+    setSmartbiUrl({ commit }, smartbiUrl) {
+      commit('SET_SMARTBI_URL', smartbiUrl)
     }
   }
 }

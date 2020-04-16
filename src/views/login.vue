@@ -42,6 +42,8 @@
       <span> ⋅ </span>
       <a href="http://www.beian.miit.gov.cn" target="_blank">{{ $store.state.settings.caseNumber }}</a>
     </div>
+    <iframe  ref="smartbiframe" style="width:0%;height:0;" :src="smartbiUrl">
+    </iframe>
   </div>
 </template>
 
@@ -52,7 +54,7 @@
   import { getCodeImg } from '@/api/login'
   import Cookies from 'js-cookie'
   import smartbi from '@/api/smartbi'
-  import axios from 'axios'
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'Login',
@@ -75,7 +77,8 @@
           code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
         },
         loading: false,
-        redirect: undefined
+        redirect: undefined,
+        smartbiUrl:''
       }
     },
     watch: {
@@ -139,40 +142,15 @@
             }
             this.$store.dispatch('Login', user).then(() => {
               this.loading = false
-              //smartbi服务器的URL地址
-              /*  var config = new Object();
-                config.baseURL = "/smartbi/vision/";
-                var BOF_UI_DEBUG = false;
-                // 创建全局唯一的JS装载器
-                var jsloader = new JSLoader(config);
-                console.log('2222>',jsloader);
-                // 创建应用程序对象
-                var userService = jsloader.imports("bof.usermanager.UserService");
-                // 通过userService.getInstance()可以调用所有的UserManagerModule方法.
-                var result = userService.getInstance().login("admin", "admin");
-                if (result) {
-                  alert("OK");
-                } else {
-                  alert("登录失败");
-                }*/
-              /* */
-              console.log('1111>', smartbi)
-              smartbi.login(user.username, user.password, process.env.VUE_APP_SMARTBI_ADDRESS).then(res => {
-                console.log('333333>', res)
-                axios.get('/smartbi/vision/index.jsp', {
-                    params: {
-                      user: this.loginForm.username,
-                      password: res.smartbiToken
-                    }
-                  }
-                ).then(function(response) {
-                  console.log(response)
-                }).catch(function(error) {
-                  console.log(error)
-                })
-              })
 
-              this.$router.push({ path: this.redirect || '/' })
+              console.log('1111>', smartbi)
+              smartbi.login(user.username, user.password).then(res => {
+                console.log('333333>', res)
+                this.setSmartbiUrl(res.smartbiUrl)
+                console.log('444444>', res)
+                this.$refs.smartbiframe.src=res.smartbiUrl + '/vision/index.jsp?user=' + user.username + '&password=' + res.smartbiToken;
+                this.$router.push({ path: this.redirect || '/' })
+              })
             }).catch(() => {
               this.loading = false
               this.getCode()
@@ -182,7 +160,8 @@
             return false
           }
         })
-      }
+      },
+      ...mapActions(['setSmartbiUrl'])
     }
   }
 </script>

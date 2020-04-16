@@ -6,24 +6,29 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
-    name: 'database' ,
+    name: 'database',
     computed: {
       documentPath() {
         //console.log('====pagePath====', process.env.VUE_APP_SMARTBI_ADDRESS, process.env.VUE_APP_SMARTBI_ADDRESS.replace("{moduleId}", "Database"))
-        return process.env.VUE_APP_SMARTBI_ADDRESS+'/vision/openmodule.jsp?id=Analysis&showbanner=false'
+        return this.getSmartbiUrl() + '/vision/openmodule.jsp?id=Analysis&showbanner=false'
       }
     },
-    mounted(){
+    mounted() {
       /**
        * iframe-宽高自适应显示
        */
-      const oIframe = document.getElementById('bdIframe');
-      const deviceWidth = document.documentElement.clientWidth;
-      const deviceHeight = document.documentElement.clientHeight;
-      oIframe.style.width = (Number(deviceWidth)-220) + 'px'; //数字是页面布局宽度差值
-      oIframe.style.height = (Number(deviceHeight)-120) + 'px'; //数字是页面布局高度差
+      const oIframe = document.getElementById('bdIframe')
+      const deviceWidth = document.documentElement.clientWidth
+      const deviceHeight = document.documentElement.clientHeight
+      oIframe.style.width = (Number(deviceWidth) - 220) + 'px' //数字是页面布局宽度差值
+      oIframe.style.height = (Number(deviceHeight) - 120) + 'px' //数字是页面布局高度差
     },
+    methods: {
+      ...mapGetters(['getSmartbiUrl'])
+    }
 
   }
 

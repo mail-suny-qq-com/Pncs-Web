@@ -1,13 +1,12 @@
 import request from '@/utils/request'
 
-export function login(username, password, smartbiUrl) {
+export function login(username, password) {
   return request({
     url: '/smartbi/login',
     method: 'post',
     data: {
       username: username,
-      password: password,
-      smartbiUrl: smartbiUrl
+      password: password
     }
   })
 }

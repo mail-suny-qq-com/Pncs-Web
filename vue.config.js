@@ -40,7 +40,7 @@ module.exports = {
         }
       },
       '/smartbi':{
-        target:process.env.VUE_APP_SMARTBI_ADDRESS,
+        target:process.env.VUE_APP_SMARTBI_API,
         changeOrigin: true,
         pathRewrite: {
           '^/smartbi': ''
