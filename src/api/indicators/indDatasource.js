@@ -10,6 +10,14 @@ export function add(data) {
   })
 }
 
+export function test(data) {
+  return request({
+    url: url+'/test',
+    method: 'post',
+    data
+  })
+}
+
 export function del(ids) {
   return request({
     url: url,
