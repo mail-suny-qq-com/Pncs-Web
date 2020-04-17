@@ -14,7 +14,7 @@
       <crudOperation :permission="permission" />
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="60%">
-        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="100px">
+        <el-form ref="form" :model="form" :rules="rules" size="small" label-width="150px">
           <el-row>
             <el-col :span="12">
               <el-form-item label="数据源名称" prop="datasourceName">
@@ -35,7 +35,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="数据库SCHEMA" prop="datasourceSchema">
+              <el-form-item label="数据库SCHEMA" prop="datasourceSchema" >
                 <el-input v-model="form.datasourceSchema" style="width: 250px;" />
               </el-form-item>
             </el-col>
@@ -91,7 +91,7 @@
           </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button :loading="loading" icon="el-icon-loading"size="mini" style="float: left; padding: 6px 9px" type="primary" @click="doTest">测试</el-button>
+          <el-button :loading="loading"  type="primary" style="background:#67C23A"  @click="doTest">测试</el-button>
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
         </div>
@@ -220,7 +220,7 @@ export default {
         }else{
           test(this.form).then(data => {
             //console.log(data)
-            if(data.result == "S"){
+            if(data.code === 0){
               alert("连接成功");
             }else{
               alert("连接失败，请检查数据源各项参数");
