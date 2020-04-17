@@ -91,9 +91,9 @@
           </el-form-item>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button :loading="loading"  type="primary" style="background:#67C23A"  @click="doTest">测试</el-button>
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
           <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+          <el-button :loading="loading"  type="primary" style="background:#67C23A"  @click="doTest">测试</el-button>
         </div>
       </el-dialog>
       <!--表格渲染-->
