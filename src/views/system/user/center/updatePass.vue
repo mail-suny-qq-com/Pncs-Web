@@ -54,7 +54,7 @@ export default {
         newPass: [
           { required: true, message: '请输入新密码', trigger: 'blur' },
           { min: 6, max: 20, message: '长度在 8 到 16 个字符', trigger: 'blur' },
-          { validator:passwordValidator}
+          //{ validator:passwordValidator}
         ],
         confirmPass: [
           { required: true, validator: confirmPass, trigger: 'blur' }
