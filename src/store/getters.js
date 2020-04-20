@@ -20,6 +20,6 @@ const getters = {
   qiNiuUploadApi: state => state.api.qiNiuUploadApi,
   sqlApi: state => state.api.sqlApi,
   swaggerApi: state => state.api.swaggerApi,
-  getSmartbiUrl:state=>state.user.smartbiUrl
+  getSmartbi:state=>state.user.smartbi
 }
 export default getters

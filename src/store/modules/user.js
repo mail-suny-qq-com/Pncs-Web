@@ -9,7 +9,7 @@ const user = {
     roles: [],
     // 第一次加载菜单时用到
     loadMenus: false,
-    smartbiUrl: ''
+    smartbi: {}
   },
 
   mutations: {
@@ -25,8 +25,8 @@ const user = {
     SET_LOAD_MENUS: (state, loadMenus) => {
       state.loadMenus = loadMenus
     },
-    SET_SMARTBI_URL: (state, smartbiUrl) => {
-      state.smartbiUrl = smartbiUrl
+    SET_SMARTBI: (state, smartbi) => {
+      state.smartbi = smartbi
     }
   },
 
@@ -78,8 +78,8 @@ const user = {
         commit('SET_LOAD_MENUS', false)
       })
     },
-    setSmartbiUrl({ commit }, smartbiUrl) {
-      commit('SET_SMARTBI_URL', smartbiUrl)
+    setSmartbi({ commit }, smartbi) {
+      commit('SET_SMARTBI', smartbi)
     }
   }
 }

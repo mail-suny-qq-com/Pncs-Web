@@ -13,7 +13,7 @@
     computed: {
       documentPath() {
         //console.log('====pagePath====', process.env.VUE_APP_SMARTBI_ADDRESS, process.env.VUE_APP_SMARTBI_ADDRESS.replace("{moduleId}", "Database"))
-        return this.getSmartbiUrl() + '/vision/openmodule.jsp?id=Publish&showbanner=false'
+        return this.getSmartbi().smartbiUrl + '/vision/openmodule.jsp?id=Publish&showbanner=false'
       }
     },
     mounted() {
@@ -27,7 +27,7 @@
       oIframe.style.height = (Number(deviceHeight) - 120) + 'px' //数字是页面布局高度差
     },
     methods: {
-      ...mapGetters(['getSmartbiUrl'])
+      ...mapGetters(['getSmartbi'])
     }
 
   }

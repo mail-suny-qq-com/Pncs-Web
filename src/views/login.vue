@@ -42,7 +42,7 @@
       <span> ⋅ </span>
       <a href="http://www.beian.miit.gov.cn" target="_blank">{{ $store.state.settings.caseNumber }}</a>
     </div>
-    <iframe  ref="smartbiframe" style="width:0%;height:0;" :src="smartbiUrl">
+    <iframe ref="smartbiframe" style="width:0%;height:0;" src="">
     </iframe>
   </div>
 </template>
@@ -53,8 +53,7 @@
   import Logo from '@/assets/images/logo.png'
   import { getCodeImg } from '@/api/login'
   import Cookies from 'js-cookie'
-  import smartbi from '@/api/smartbi'
-  import { mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Login',
@@ -77,8 +76,7 @@
           code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
         },
         loading: false,
-        redirect: undefined,
-        smartbiUrl:''
+        redirect: undefined
       }
     },
     watch: {
@@ -92,6 +90,15 @@
     created() {
       this.getCode()
       this.getCookie()
+    },
+    mounted() {
+
+      let smartbi = this.getSmartbi()
+      console.log('login  mounted>>>>', smartbi)
+      if (smartbi && smartbi.smartbiUrl) {
+        console.log('22222  login  mounted>>>>', smartbi)
+        this.$refs.smartbiframe.src = smartbi.smartbiUrl + '/vision/logout.jsp'
+      }
     },
     methods: {
       getBackground() {
@@ -142,15 +149,7 @@
             }
             this.$store.dispatch('Login', user).then(() => {
               this.loading = false
-
-              console.log('1111>', smartbi)
-              smartbi.login(user.username, user.password).then(res => {
-                console.log('333333>', res)
-                this.setSmartbiUrl(res.smartbiUrl)
-                console.log('444444>', res)
-                this.$refs.smartbiframe.src=res.smartbiUrl + '/vision/index.jsp?user=' + user.username + '&password=' + res.smartbiToken;
-                this.$router.push({ path: this.redirect || '/' })
-              })
+              this.$router.push({ path: this.redirect || '/' })
             }).catch(() => {
               this.loading = false
               this.getCode()
@@ -161,7 +160,7 @@
           }
         })
       },
-      ...mapActions(['setSmartbiUrl'])
+      ...mapGetters(['getSmartbi'])
     }
   }
 </script>

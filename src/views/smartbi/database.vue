@@ -12,8 +12,7 @@
     name: 'database',
     computed: {
       documentPath() {
-        console.log('====pagePath====',this.getSmartbiUrl() )
-        return this.getSmartbiUrl() + '/vision/openmodule.jsp?id=Database&showbanner=false'
+        return this.getSmartbi().smartbiUrl + '/vision/openmodule.jsp?id=Database&showbanner=false'
       }
     },
     mounted() {
@@ -27,7 +26,7 @@
       oIframe.style.height = (Number(deviceHeight) - 120) + 'px' //数字是页面布局高度差
     },
     methods: {
-      ...mapGetters(['getSmartbiUrl'])
+      ...mapGetters(['getSmartbi'])
     }
   }
 

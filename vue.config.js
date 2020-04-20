@@ -39,13 +39,13 @@ module.exports = {
           '^/auth': 'auth'
         }
       },
-      '/smartbi':{
+     /* '/smartbi':{
         target:process.env.VUE_APP_SMARTBI_API,
         changeOrigin: true,
         pathRewrite: {
           '^/smartbi': ''
         }
-      }
+      }*/
     }
   },
   configureWebpack: {
