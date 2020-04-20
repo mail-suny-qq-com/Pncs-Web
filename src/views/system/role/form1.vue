@@ -172,30 +172,30 @@ export default {
     },
     onUserSelected(selection, row) {
       if(selection.indexOf(row)>=0){
-        if(this.userIds.indexOf(row.ID)<0){
+        if(this.userIds.indexOf(row.id)<0){
           this.tag.data.push(row)
-          this.userIds.push(row.ID)
+          this.userIds.push(row.id)
         }
       }else{
         if(this.userIds.indexOf(row.ID)>=0){
-          this.tag.data.splice(this.userIds.indexOf(row.ID),1)
-          this.userIds.splice(this.userIds.indexOf(row.ID),1)
+          this.tag.data.splice(this.userIds.indexOf(row.id),1)
+          this.userIds.splice(this.userIds.indexOf(row.id),1)
         }
       }
     },
     onUserSelectedAll(selection) {
       if(selection.length>0){
         selection.forEach(row => {
-          if(this.userIds.indexOf(row.ID)<0){
+          if(this.userIds.indexOf(row.id)<0){
             this.tag.data.push(row)
-            this.userIds.push(row.ID)
+            this.userIds.push(row.id)
           }
         });
       }else{
         this.table.data.forEach(row => {
-          if(this.userIds.indexOf(row.ID)>=0){
-            this.tag.data.splice(this.userIds.indexOf(row.ID),1)
-            this.userIds.splice(this.userIds.indexOf(row.ID),1)
+          if(this.userIds.indexOf(row.id)>=0){
+            this.tag.data.splice(this.userIds.indexOf(row.id),1)
+            this.userIds.splice(this.userIds.indexOf(row.id),1)
           }
         });
       }
@@ -208,7 +208,7 @@ export default {
       }).then(res => {
           _this.tag.data = res
           _this.tag.data.forEach(row => {
-            this.userIds.push(row.ID)
+            this.userIds.push(row.id)
           });
       })
     },
