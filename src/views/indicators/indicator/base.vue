@@ -213,8 +213,8 @@
               <el-row>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
                   <el-form-item label="数据源" prop="dataSource">
-                    <!--<el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;">-->
-                    <el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;" @change="getTables">
+                    <el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;">
+                    <!--<el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;" @change="getTables">-->
                       <el-option
                         v-for="item in sourceData"
                         :key="item.datasourceName"
