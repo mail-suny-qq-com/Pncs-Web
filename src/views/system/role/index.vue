@@ -54,47 +54,47 @@
         <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
       </div>
     </el-dialog>
-    <aForm ref="form1"/>
+    <aForm ref="form1" />
     <el-row :gutter="15">
       <!--角色管理-->
-      <el-col  style="margin-bottom: 10px">
+      <el-col style="margin-bottom: 10px">
         <!-- <el-card class="box-card" shadow="never">
           <div slot="header" class="clearfix">
             <span class="role-span">角色列表</span>
           </div> -->
-          <el-table ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
-            <el-table-column :selectable="checkboxT" type="selection" width="55" />
-            <el-table-column v-if="columns.visible('name')" prop="name" label="名称" />
-            <el-table-column v-if="columns.visible('dataScope')" prop="dataScope" label="数据权限" />
-            <!-- <el-table-column v-if="columns.visible('permission')" prop="permission" label="角色权限" /> -->
-            <!-- <el-table-column v-if="columns.visible('level')" prop="level" label="角色级别" /> -->
-            <el-table-column v-if="columns.visible('remark')" :show-overflow-tooltip="true" prop="remark" label="描述" />
-            <el-table-column v-if="columns.visible('createTime')" :show-overflow-tooltip="true" width="135px" prop="createTime" label="创建日期">
-              <template slot-scope="scope">
-                <span>{{ parseTime(scope.row.createTime) }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column v-permission="['admin','roles:edit','roles:del']" label="操作" width="160px" align="center" fixed="right">
-              <template slot-scope="scope">
-                <el-button
-                  slot="left"
-                  class="filter-item"
-                  size="mini"
-                  type="primary"
-                  icon="el-icon-user-solid"
-                  style="margin-bottom:5px !important"
-                  @click="toSelectUsers(scope.row)"
-                />
-                <udOperation
-                  :data="scope.row"
-                  :permission="permission"
-                  style="display:inline-block;"
-                />
-              </template>
-            </el-table-column>
-          </el-table>
-          <!--分页组件-->
-          <pagination />
+        <el-table ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
+          <el-table-column :selectable="checkboxT" type="selection" width="55" />
+          <el-table-column v-if="columns.visible('name')" prop="name" label="名称" />
+          <el-table-column v-if="columns.visible('dataScope')" prop="dataScope" label="数据权限" />
+          <!-- <el-table-column v-if="columns.visible('permission')" prop="permission" label="角色权限" /> -->
+          <!-- <el-table-column v-if="columns.visible('level')" prop="level" label="角色级别" /> -->
+          <el-table-column v-if="columns.visible('remark')" :show-overflow-tooltip="true" prop="remark" label="描述" />
+          <el-table-column v-if="columns.visible('createTime')" :show-overflow-tooltip="true" width="135px" prop="createTime" label="创建日期">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.createTime) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column v-permission="['admin','roles:edit','roles:del']" label="操作" width="160px" align="center" fixed="right">
+            <template slot-scope="scope">
+              <el-button
+                slot="left"
+                class="filter-item"
+                size="mini"
+                type="primary"
+                icon="el-icon-user-solid"
+                style="margin-bottom:5px !important"
+                @click="toSelectUsers(scope.row)"
+              />
+              <udOperation
+                :data="scope.row"
+                :permission="permission"
+                style="display:inline-block;"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+        <!--分页组件-->
+        <pagination />
         <!-- </el-card> -->
       </el-col>
       <!-- 菜单授权
@@ -149,7 +149,7 @@ const defaultCrud = CRUD({ title: '角色', url: 'api/roles', sort: 'id,asc', cr
 const defaultForm = { id: null, name: null, depts: [], remark: null, dataScope: '全部', level: 3, permission: null }
 export default {
   name: 'Role',
-  components: { Treeselect, pagination, crudOperation, rrOperation, udOperation,aForm },
+  components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, aForm },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   data() {
     return {
@@ -185,7 +185,7 @@ export default {
   methods: {
     toSelectUsers(data) {
       const _this = this.$refs.form1
-      _this.title = '当前角色['+data.name+']'
+      _this.title = '当前角色[' + data.name + ']'
       _this.roleId = data.id
       _this.getDeptDatas()
       _this.toQueryUser()

@@ -26,4 +26,26 @@ export function edit(data) {
   })
 }
 
-export default { url ,method: { add, edit, del } }
+export function getDimInfo() {
+  return request({
+    url: 'v1/indicators/indDimensions/dim/all',
+    method: 'get'
+  })
+}
+
+export function getAllSource() {
+  return request({
+    url: 'v1/indicators/indDatasources/source/all',
+    method: 'get'
+  })
+}
+
+export function getTables(data) {
+  return request({
+    url: 'v1/database/tables/all',
+    method: 'post',
+    data
+  })
+}
+
+export default { url, method: { add, edit, del }}
