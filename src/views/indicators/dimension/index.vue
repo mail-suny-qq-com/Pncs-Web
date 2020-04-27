@@ -23,8 +23,15 @@
             </el-form-item>
             </el-col>
             <el-col :span="12">
-            <el-form-item label="数据源ID(预留)">
-              <el-input v-model="form.datasourceId" style="width: 250px;" />
+            <el-form-item label="数据源ID">
+              <!--<el-input v-model="form.datasourceId" style="width: 250px;" />-->
+              <el-select v-model="form.datasourceId" filterable placeholder="请选择" style="width: 250px;" @change="getTableByDB">
+                <el-option
+                  v-for="item in tableDB"
+                  :key="item.id"
+                  :label="item.datasourceName"
+                  :value="item.id" />
+              </el-select>
             </el-form-item>
             </el-col>
           </el-row>
@@ -51,7 +58,7 @@
             <el-col :span="12">
             <el-form-item label="维度显示字段" prop="nameColumn">
               <!--<el-input v-model="form.nameColumn" style="width: 250px;" />-->
-              <el-select v-model="form.nameColumn" multiple filterable placeholder="请选择" style="width: 680px;">
+              <el-select v-model="form.nameColumn" filterable placeholder="请选择" style="width: 680px;" @change="setColumnDesc">
                 <el-option
                   v-for="item in tableInfo"
                   :key="item.columnName"
@@ -64,14 +71,14 @@
           <el-row>
             <el-col :span="12">
             <el-form-item label="维度显示字段描述" prop="nameColumnDesc">
-              <!--<el-input v-model="form.nameColumnDesc" style="width: 370px;" />-->
-              <el-select v-model="form.nameColumnDesc" multiple filterable placeholder="请选择" style="width: 680px;">
+              <el-input v-model="form.nameColumnDesc" style="width: 250px;" disabled="disabled"/>
+              <!--<el-select v-model="form.nameColumnDesc" filterable placeholder="请选择" style="width: 680px;">
                 <el-option
                   v-for="item in tableInfo"
                   :key="item.remark"
                   :label="item.remark"
                   :value="item.remark" />
-              </el-select>
+              </el-select>-->
             </el-form-item>
             </el-col>
           </el-row>
@@ -87,7 +94,7 @@
             </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!--<el-row>
             <el-col :span="12">
             <el-form-item label="父ID(预留)">
               <el-input v-model="form.pid" style="width: 250px;" />
@@ -98,7 +105,7 @@
               <el-input v-model="form.level" style="width: 250px;" />
             </el-form-item>
             </el-col>
-          </el-row>
+          </el-row>-->
           <el-row>
             <el-col :span="12">
             <el-form-item label="别名">
@@ -140,15 +147,15 @@
         <el-table-column type="selection" width="55" />
         <el-table-column v-if="columns.visible('id')" prop="id" label="维度ID" className="_default_hidden"/>
         <el-table-column v-if="columns.visible('dimCode')" prop="dimCode" label="维度编号" />
-        <el-table-column v-if="columns.visible('datasourceId')" prop="datasourceId" label="数据源ID" />
+        <el-table-column v-if="columns.visible('datasourceId')" prop="datasourceId" label="数据源ID" :formatter="formatId" />
         <el-table-column v-if="columns.visible('dimName')" prop="dimName" label="维度名称" />
         <el-table-column v-if="columns.visible('tableName')" prop="tableName" label="维表表名称" width="120" />
         <el-table-column v-if="columns.visible('nameColumn')" prop="nameColumn" label="维度显示字段" width="140" />
         <el-table-column v-if="columns.visible('nameColumnDesc')" prop="nameColumnDesc" label="维度显示字段描述" width="140" />
         <el-table-column v-if="columns.visible('codeColumn')" prop="codeColumn" label="代码字段" />
         <el-table-column v-if="columns.visible('codeColumnDesc')" prop="codeColumnDesc" label="代码字段描述" width="100" />
-        <el-table-column v-if="columns.visible('pid')" prop="pid" label="父ID(预留)" />
-        <el-table-column v-if="columns.visible('level')" prop="level" label="级别(预留)" />
+        <!--<el-table-column v-if="columns.visible('pid')" prop="pid" label="父ID(预留)" />
+        <el-table-column v-if="columns.visible('level')" prop="level" label="级别(预留)" />-->
         <el-table-column v-if="columns.visible('alias')" prop="alias" label="别名" />
         <el-table-column v-if="columns.visible('pkFlag')" prop="pkFlag" label="主键标志" />
         <el-table-column v-if="columns.visible('crtUserCode')" prop="crtUserCode" label="创建人" />
@@ -187,7 +194,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
-import { getAllTable,getTableColumns } from '@/api/generator/generator'
+import { getAllSource,getTables,getColumns } from '@/api/indicators/indIndicatorInfo'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({ title: '维度管理', url: crudIndDimension.url, sort: 'id,desc', crudMethod: { ...crudIndDimension.method }})
@@ -205,6 +212,7 @@ export default {
           },
       tableData: [],
       tableInfo: [],
+      tableDB: [],
       selectData: [],
       permission: {
         add: ['admin', 'indDimension:add'],
@@ -229,9 +237,9 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      getAllTable().then(data => {
-      //console.log("========getTables====>",data)
-        this.tableData = data
+      getAllSource().then(data => {
+      //console.log("=====getAllSource====>>>>",data)
+        this.tableDB = data.data
       })
     })
   },
@@ -244,31 +252,91 @@ export default {
       this.tableInfo = null
     },
     [CRUD.HOOK.beforeToEdit](){
-         const temp1 = this.form.nameColumn
-         const temp2 = this.form.nameColumnDesc
-         if( (temp1 != null && temp1 != "") || temp1.indexOf(",") != -1){
-          this.form.nameColumn = temp1.split(',')
-         }
-         if( (temp2 != null && temp2 != "")  || temp2.indexOf(",") != -1){
-          this.form.nameColumnDesc = temp2.split(',')
-         }
+         //const temp1 = this.form.nameColumn
+         //const temp2 = this.form.nameColumnDesc
+         //if( (temp1 != null && temp1 != "") || temp1.indexOf(",") != -1){
+          //this.form.nameColumn = temp1.split(',')
+         //}
+         //if( (temp2 != null && temp2 != "")  || temp2.indexOf(",") != -1){
+          //this.form.nameColumnDesc = temp2.split(',')
+         //}
          //this.form.nameColumn = this.form.nameColumn.split(',')
          //this.form.nameColumnDesc = this.form.nameColumnDesc.split(',')
-         getTableColumns(this.form.tableName).then(data => {
-           this.tableInfo = data.content
+         //getTableColumns(this.form.tableName).then(data => {
+           //this.tableInfo = data.content
+         //})
+         const param = {
+           'id': this.form.datasourceId,
+           'tablename': this.form.tableName
+         }
+         getTables(param).then(data => {
+           //console.log("====getTables====>>>>>",data)
+           if(data.code === 0){
+             this.tableData = data.data
+           }else{
+             alert("数据源连接错误");
+           }
+         })
+         getColumns(param).then(data => {
+           //console.log("========getColumns====>>>>",data)
+           if(data.code === 0){
+             this.tableInfo = data.data
+           }else{
+             alert("数据源连接错误");
+           }
          })
     },
-    [CRUD.HOOK.beforeSubmit](){
-         this.form.nameColumn = String(this.form.nameColumn)
-         this.form.nameColumnDesc = String(this.form.nameColumnDesc)
-    },
+    //[CRUD.HOOK.beforeSubmit](){
+         //this.form.nameColumn = String(this.form.nameColumn)
+         //this.form.nameColumnDesc = String(this.form.nameColumnDesc)
+    //},
     getTableInfo() {
       this.form.nameColumn = null
       this.form.nameColumnDesc = null
-      getTableColumns(this.form.tableName).then(data => {
-        //console.log("========tableInfo====>",data)
-        this.tableInfo = data.content
+      const param = {
+        'id': this.form.datasourceId,
+        'tablename': this.form.tableName
+      }
+      getColumns(param).then(data => {
+        //console.log("========getColumns====>>>>",data)
+        if(data.code === 0){
+          this.tableInfo = data.data
+        }else{
+          alert("数据源连接错误");
+        }
       })
+    },
+    setColumnDesc() {
+      this.tableInfo.forEach(row => {
+        if(this.form.nameColumn == row.columnName){
+          this.form.nameColumnDesc = row.remark
+        }
+      });
+    },
+    getTableByDB() {
+      this.form.nameColumn = null
+      this.form.nameColumnDesc = null
+      this.form.tableName = null
+      const param = {
+        'id': this.form.datasourceId
+      }
+      getTables(param).then(data => {
+        //console.log("====getTables====>>>>>",data)
+        if(data.code === 0){
+          this.tableData = data.data
+        }else{
+          alert("数据源连接错误");
+        }
+      })
+    },
+    formatId(row){
+        let name = ""
+        this.tableDB.forEach(row1 => {
+          if(row1.id == row.datasourceId){
+            name = row1.datasourceName
+          }
+        })
+        return name
     }
   }
 }
