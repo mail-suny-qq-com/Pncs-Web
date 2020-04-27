@@ -213,8 +213,8 @@
               <el-row>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="8">
                   <el-form-item label="数据源" prop="dataSource">
-                    <el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;">
-                    <!--<el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;" @change="getTables">-->
+                    <!--<el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;">-->
+                    <el-select v-model="form.dataSource" filterable placeholder="请选择" style="width: 250px;" @change="getTables">
                       <el-option
                         v-for="item in sourceData"
                         :key="item.datasourceName"
@@ -376,18 +376,17 @@
 </template>
 
 <script>
-import crudIndIndicatorInfo, { getDimInfo, getAllSource, getTables } from '@/api/indicators/indIndicatorInfo'
+import crudIndIndicatorInfo, { getDimInfo, getAllSource, getTables, getColumns } from '@/api/indicators/indIndicatorInfo'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import category from '../category/category'
-import { getAllTable, getTableColumns } from '@/api/generator/generator'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({
-  title: '指标基本信息',
+  title: '基础指标信息',
   url: crudIndIndicatorInfo.url,
   sort: 'id,desc',
   crudMethod: { ...crudIndIndicatorInfo.method }
@@ -474,12 +473,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      getAllSource().then(data => {
-        this.sourceData = data.data
-      })
-      getAllTable().then(data => {
-        this.tableData = data
-      })
+
     })
   },
   methods: {
@@ -488,18 +482,44 @@ export default {
       this.query.ieType = '1'
       return true
     },
+    [CRUD.HOOK.beforeToEdit]() {
+      getAllSource().then(data => {
+        this.sourceData = data.data
+      })
+      const data = {
+        'id': this.form.dataSource,
+        'tablename': this.form.dataTable
+      }
+      getTables(data).then(data => {
+        this.tableData = data.data
+      })
+      getColumns(data).then(data => {
+        this.tableInfo = data.data
+      })
+      getDimInfo().then(data => {
+        console.log(data)
+        this.dimInfo = data.data
+      })
+    },
     [CRUD.HOOK.beforeToAdd]() {
       if (!this.form.categoryId) {
         this.crud.notify('请选择分类', CRUD.NOTIFICATION_TYPE.ERROR)
         return false
       }
-      if (this.form.categoryId == '0') {
+      if (this.form.categoryId === '0') {
         this.crud.notify('根节点不能添加', CRUD.NOTIFICATION_TYPE.ERROR)
         return false
       }
+      getAllSource().then(data => {
+        this.sourceData = data.data
+      })
+      getTables(null).then(data => {
+        this.tableData = data.data
+      })
+      this.tableInfo = null
+      this.dimInfo = null
     },
     handleCategoryClick(data) {
-      // console.log('========handleCategoryClick====>', data,this.form)
       this.crud.form.categoryId = data.id
       this.crud.query.categoryIds = data.childrenIds
       this.form.categoryId = data.id
@@ -514,9 +534,7 @@ export default {
       const data = {
         'id': this.form.dataSource
       }
-
       getTables(data).then(data => {
-        console.log(data)
         this.tableData = data.data
       })
     },
@@ -524,24 +542,24 @@ export default {
       this.form.periodCode = null
       this.form.dimCodes = null
       this.form.dimColumns = null
-      getTableColumns(this.form.dataTable).then(data => {
-        this.tableInfo = data.content
+      const data = {
+        'id': this.form.dataSource,
+        'tablename': this.form.dataTable
+      }
+      getColumns(data).then(data => {
+        this.tableInfo = data.data
       })
       getDimInfo().then(data => {
+        console.log(data)
         this.dimInfo = data.data
       })
     },
     [CRUD.HOOK.beforeSubmit]() {
       // 判断维度和适应维度字段数量是否一致
-      if ((this.form.dimCodes.length) == (this.form.dimColumns.length)) {
-      } else {
+      if ((this.form.dimCodes.length) !== (this.form.dimColumns.length)) {
         alert('适应维度和维度对应字段必须一致')
         return false
       }
-    },
-    [CRUD.HOOK.beforeToAdd]() {
-      this.tableInfo = null
-      this.dimInfo = null
     }
     /* dateFormat(row) {
           //console.log("==================111111111111>>>",row)

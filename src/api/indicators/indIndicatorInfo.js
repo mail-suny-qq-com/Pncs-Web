@@ -48,4 +48,12 @@ export function getTables(data) {
   })
 }
 
+export function getColumns(data) {
+  return request({
+    url: 'v1/database/columns/all',
+    method: 'post',
+    data
+  })
+}
+
 export default { url, method: { add, edit, del }}
