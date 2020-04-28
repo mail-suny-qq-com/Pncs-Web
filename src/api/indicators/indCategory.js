@@ -33,4 +33,11 @@ export function tree(type, parentId) {
   })
 }
 
-export default { url, tree, crud: { add, edit, del } }
+export function treeInfo(type, parentId) {
+  return request({
+    url: url + `/treeInfo/${type}/${parentId}`,
+    method: 'get'
+  })
+}
+
+export default { url, tree, treeInfo, crud: { add, edit, del } }

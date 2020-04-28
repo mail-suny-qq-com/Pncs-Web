@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <!--侧边分类数据-->
       <el-col :xs="9" :sm="6" :md="4" :lg="4" :xl="4">
-        <category type="1" @node-click="handleCategoryClick" />
+        <category type="2" @node-click="handleCategoryClick" />
       </el-col>
       <!--用户数据-->
       <el-col :xs="15" :sm="18" :md="20" :lg="20" :xl="20">
@@ -43,7 +43,19 @@
             <rrOperation :crud="crud" />
           </div>
           <!--如果想在工具栏加入更多按钮，可以使用插槽方式， slot = 'left' or 'right'-->
-          <crudOperation :permission="permission" />
+          <crudOperation :permission="permission">
+            <el-button
+              slot="right"
+              class="filter-item"
+              size="mini"
+              type="success"
+              icon="el-icon-setting"
+              :disabled="crud.selections.length !== 1"
+              @click="arithmeticDefinition(crud.selections[0])"
+            >
+              算法定义
+            </el-button>
+          </crudOperation>
           <!--表单组件-->
           <el-dialog
             :close-on-click-modal="false"
@@ -166,6 +178,7 @@
               <el-button :loading="crud.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
             </div>
           </el-dialog>
+          <aForm ref="arithmetic" />
           <!--表格渲染-->
           <el-table
             ref="table"
@@ -199,6 +212,11 @@
             <el-table-column v-if="columns.visible('ieDataUnit')" prop="ieDataUnit" label="指标单位">
               <template slot-scope="scope">
                 {{ dict.label.IE_DATA_UNIT[scope.row.ieDataUnit] }}
+              </template>
+            </el-table-column>
+            <el-table-column v-if="columns.visible('ieMethod')" prop="ieMethod" label="取值方式">
+              <template slot-scope="scope">
+                {{ dict.label.IE_METHOD[scope.row.ieMethod] }}
               </template>
             </el-table-column>
             <el-table-column prop="startDate" :formatter="dateColumnFormat" label="生效日期" width="90px" />
@@ -242,6 +260,7 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import category from '../category/category'
+import aForm from './arithmetic'
 
 // crud交由presenter持有
 const defaultCrud = CRUD({
@@ -279,7 +298,7 @@ const defaultForm = {
 }
 export default {
   name: 'IndIndicatorInfo',
-  components: { pagination, crudOperation, rrOperation, udOperation, category },
+  components: { pagination, crudOperation, rrOperation, udOperation, category, aForm },
   mixins: [presenter(defaultCrud), header(), form(defaultForm), crud()],
   dicts: ['IE_PROP', 'IE_TYPE', 'IE_METHOD', 'CALC_FREQ', 'IE_STATUS', 'IE_DATA_UNIT', 'RETENTION'],
   data() {
@@ -322,7 +341,7 @@ export default {
         this.crud.notify('请选择分类', CRUD.NOTIFICATION_TYPE.ERROR)
         return false
       }
-      if (this.form.categoryId == '0') {
+      if (this.form.categoryId === '0') {
         this.crud.notify('根节点不能添加', CRUD.NOTIFICATION_TYPE.ERROR)
         return false
       }
@@ -332,7 +351,17 @@ export default {
       this.crud.query.categoryIds = data.childrenIds
       this.form.categoryId = data.id
       this.crud.refresh()
-    }
+    },
+    /*点击算法定义按钮触发*/
+    arithmeticDefinition(data) {
+      //取值方式=1打开四则运算页面.2-SQL公式，3-限制，4-EXCEL公式
+      if(data.ieMethod==1){
+        const _this = this.$refs.arithmetic
+        _this.dialog = true
+      }
+
+
+    },
   }
 }
 </script>
