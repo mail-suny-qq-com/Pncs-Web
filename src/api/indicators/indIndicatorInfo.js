@@ -56,4 +56,20 @@ export function getColumns(data) {
   })
 }
 
+export function saveArithmetic(data) {
+  return request({
+    url: 'v1/indicators/indDeriveRules/saveArithmetic',
+    method: 'post',
+    data
+  })
+}
+
+export function getIndDeriveRule(data) {
+  return request({
+    url: 'v1/indicators/indDeriveRules/getIndDeriveRule',
+    method: 'post',
+    data
+  })
+}
+
 export default { url, method: { add, edit, del }}

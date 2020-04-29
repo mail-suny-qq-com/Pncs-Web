@@ -13,7 +13,7 @@
         >
           <span slot-scope="{ node, data}" class="span-ellipsis">
 
-            <span :title="data.categoryName" v-if="data.categoryType === '88'"><svg-icon class=""></svg-icon>{{ data.categoryName }}
+            <span :title="[data.categoryName]" v-if="data.categoryType === '88'"><svg-icon class=""></svg-icon>[{{ data.categoryName }}]
             </span>
             <span :title="data.categoryName" v-if="data.categoryType !== '88'"><svg-icon icon-class="folder_open" class=""></svg-icon>{{ data.categoryName }}
             </span>
@@ -93,11 +93,8 @@
       init() {
         crudIndCategory.treeInfo(this.type, this.parentId).then(res => {
           this.treeData[0].children = res.data
-          console.log(this.treeData[0].children)
-          //this.crud.notify(this.dict.label.user_status[val] + '成功', CRUD.NOTIFICATION_TYPE.SUCCESS)
         }).catch(() => {
           console.log('')
-          //data.enabled = !data.enabled
         })
       }
     }

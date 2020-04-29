@@ -253,7 +253,7 @@
 </template>
 
 <script>
-import crudIndIndicatorInfo from '@/api/indicators/indIndicatorInfo'
+import crudIndIndicatorInfo,{getIndDeriveRule } from '@/api/indicators/indIndicatorInfo'
 import CRUD, { presenter, header, form, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -357,10 +357,19 @@ export default {
       //取值方式=1打开四则运算页面.2-SQL公式，3-限制，4-EXCEL公式
       if(data.ieMethod==1){
         const _this = this.$refs.arithmetic
+        const ieCode = {
+          'ieCode': data.ieCode,
+        }
+        getIndDeriveRule(ieCode).then(data => {
+          if(data.code===0){
+            console.log(data)
+            //_this.tags=
+            //_this.dBExpress=
+          }
+        })
+        _this.ieCode = data.ieCode
         _this.dialog = true
       }
-
-
     },
   }
 }
