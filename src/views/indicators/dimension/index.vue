@@ -19,7 +19,7 @@
           <el-row>
             <el-col :span="12">
             <el-form-item label="维度编号">
-              <el-input v-model="form.dimCode" style="width: 250px;" />
+              <el-input v-model="form.dimCode" style="width: 250px;" placeholder="系统自动生成..." :disabled="true" />
             </el-form-item>
             </el-col>
             <el-col :span="12">
